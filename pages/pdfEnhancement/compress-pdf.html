@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compress PDF // FusionMint Laboratory</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="stylesheet" href="../../assets/css/pdfEnhancement/compress-pdf.css">
+</head>
+<body class="no-scrollbar text-slate-200 min-h-screen flex flex-col pt-24 lg:overflow-hidden">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-purple-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <!-- UNIFIED FLOATING NAVIGATION BAR HUB -->
+    <div class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/50">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-500 to-fuchsia-400 flex items-center justify-center shadow-md shadow-purple-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-atom text-slate-950 text-sm animate-spin [animation-duration:16s]"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-purple-400">Mint</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+
+            <div class="flex justify-end items-center gap-2 sm:gap-3 w-1/3 shrink-0">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shrink-0 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                    <span class="hidden xs:inline">Compression Matrix</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- MAIN MATRIX INTERFACE ARCHITECTURE -->
+    <main class="w-full max-w-[98%] mx-auto px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 relative z-10 items-stretch overflow-hidden h-auto lg:h-[calc(100vh-8rem)]">
+        
+        <!-- LEFT PARAMETERS RENDER DECK -->
+        <div class="col-span-12 lg:col-span-3 flex flex-col gap-4 order-2 lg:order-1 h-auto lg:h-full overflow-hidden">
+            <div class="bg-slate-950/40 border border-slate-800/60 rounded-2xl p-4 flex flex-col gap-4 flex-1 justify-between overflow-y-auto no-scrollbar">
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-purple-400"></i> Optimization Knobs
+                    </h3>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Sizing Input Strategy</span>
+                        <div class="grid grid-cols-2 gap-1.5 bg-slate-950/60 border border-slate-900 p-1 rounded-xl">
+                            <button id="mode-preset-btn" onclick="toggleSizingInputStrategy('preset')" class="py-1 text-[10px] font-bold text-center rounded bg-purple-500 text-slate-950 transition-all cursor-pointer">Preset Mode</button>
+                            <button id="mode-manual-btn" onclick="toggleSizingInputStrategy('manual')" class="py-1 text-[10px] font-bold text-center rounded text-slate-400 hover:text-slate-200 transition-all cursor-pointer">Manual Size</button>
+                        </div>
+                    </div>
+                    
+                    <div id="wrapper-preset-slider" class="flex flex-col gap-2 bg-slate-900/30 border border-slate-900 p-3.5 rounded-xl">
+                        <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400">
+                            <span>Ratio Metric</span>
+                            <span id="compression-strategy-label" class="font-mono text-purple-400 font-extrabold">Balanced Strategy</span>
+                        </div>
+                        <input type="range" id="compression-ratio-slider" min="1" max="3" value="2" oninput="syncCompressionSliderLabelMetrics(this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400 mt-2">
+                        <div class="flex items-center justify-between text-[9px] font-mono text-slate-500 font-bold mt-1 px-0.5">
+                            <span>Low</span>
+                            <span>Balanced</span>
+                            <span>Max</span>
+                        </div>
+                    </div>
+
+                    <div id="wrapper-manual-dimensions" class="hidden flex flex-col gap-3 bg-slate-900/30 border border-slate-900 p-3.5 rounded-xl transition-all">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400">
+                                <span>Scale Factor</span>
+                                <span id="manual-scale-factor-label" class="font-mono text-purple-400 font-extrabold">100%</span>
+                            </div>
+                            <input type="range" id="manual-scale-slider" min="10" max="100" value="100" step="5" oninput="applyManualScaleFactorSliderMetrics(this.value)" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-400 mt-1">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-1">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">Target Width (px)</span>
+                                <input type="number" id="manual-width-input" oninput="handleManualDimensionTextInput('w')" class="w-full bg-slate-950 border border-slate-800 text-xs font-medium font-mono text-slate-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-purple-500/40" placeholder="e.g. 1920">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500">Target Height (px)</span>
+                                <input type="number" id="manual-height-input" oninput="handleManualDimensionTextInput('h')" class="w-full bg-slate-950 border border-slate-800 text-xs font-medium font-mono text-slate-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-purple-500/40" placeholder="e.g. 1080">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Output Suffix Name</span>
+                        <input type="text" id="pdf-output-prefix" value="compressed_optimization" class="w-full bg-slate-900 border border-slate-800 text-sm font-medium text-slate-200 font-mono rounded-xl px-3 py-2.5 focus:outline-none focus:border-purple-500/40" placeholder="Enter output name pattern...">
+                    </div>
+                </div>
+
+                <div id="compilation-actions-deck" class="hidden flex flex-col gap-3 pt-4 border-t border-slate-900 shrink-0">
+                    <button onclick="executeBrowserSidePDFCompression()" class="w-full min-h-[44px] bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-slate-950 font-extrabold text-sm uppercase tracking-widest rounded-xl shadow-lg transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-compress text-base"></i> Shrink & Mint PDF
+                    </button>
+                    <button onclick="purgeActiveCompressionPipeline()" class="w-full py-2.5 bg-slate-900/60 hover:bg-red-950/30 border border-slate-800 hover:border-red-900/50 text-xs text-slate-400 hover:text-red-400 uppercase font-extrabold tracking-widest rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-folder-minus"></i> Purge Active File
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER PANEL: LIVE SIMULATOR VISUAL MONITOR -->
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-5 flex flex-col justify-center items-center bg-slate-950/10 border border-slate-900/60 rounded-3xl p-6 h-[52vh] lg:h-full relative overflow-hidden transition-all duration-300 order-1 lg:order-2">
+            <span id="manifest-title-lbl" class="absolute top-3 left-1/2 -translate-x-1/2 text-[9px] uppercase font-bold tracking-widest bg-slate-950/90 text-purple-400 border border-slate-900/40 px-2.5 py-1 rounded-md z-30">Live Document Simulator Preview</span>
+
+            <div class="w-full flex items-center justify-center gap-4 mt-6 flex-1 max-h-[80%] relative">
+                <!-- Left Nav Arrow Button -->
+                <button id="simulator-left-arrow" onclick="navigateSimulatorPageFrames(-1)" class="hidden w-11 h-11 rounded-full bg-slate-900/80 hover:bg-slate-850 border border-slate-800 text-slate-300 hover:text-purple-400 flex items-center justify-center transition-all cursor-pointer shadow-xl active:scale-95 shrink-0">
+                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                </button>
+
+                <!-- Centered Document Frame Viewport Container -->
+                <div id="pdf-paper-sheet-simulator" onclick="triggerLightboxModalViewport()" class="relative bg-white text-slate-950 w-full max-w-[240px] sm:max-w-[320px] aspect-[210/297] rounded-md transition-all duration-300 preview-sheet-shadow flex items-center justify-center p-0.5 overflow-hidden cursor-zoom-in h-full mx-auto">
+                    <div id="simulator-empty-callout" class="text-center text-slate-400 p-4 flex flex-col items-center gap-1.5 select-none my-auto">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xl text-purple-500/30 animate-pulse"></i>
+                        <p class="text-[10px] font-bold uppercase tracking-wider">No Document Loaded</p>
+                        <span class="text-[9px] lowercase leading-relaxed text-slate-500/70 max-w-[190px] block">Upload a PDF file to run real-time local sheet rendering optimization frames</span>
+                    </div>
+                    <div id="simulator-raster-frame" class="w-full h-full relative hidden flex items-center justify-center overflow-hidden">
+                        <canvas id="simulator-render-canvas" class="max-w-full max-h-full object-contain mx-auto" style="display: block;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Right Nav Arrow Button -->
+                <button id="simulator-right-arrow" onclick="navigateSimulatorPageFrames(1)" class="hidden w-11 h-11 rounded-full bg-slate-900/80 hover:bg-slate-850 border border-slate-800 text-slate-300 hover:text-purple-400 flex items-center justify-center transition-all cursor-pointer shadow-xl active:scale-95 shrink-0">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+
+            <div id="simulator-pagination-deck" class="hidden items-center gap-3 bg-slate-950/60 border border-slate-900 px-4 py-2 rounded-xl text-xs font-mono font-bold mt-3 z-30 relative mx-auto">
+                <span id="simulator-page-index-label" class="text-[11px] text-slate-300">Page 1 / 1</span>
+            </div>
+        </div>
+
+        <!-- RIGHT MODULE ACTION DROP ZONES & PERFORMANCE MONITOR -->
+        <div class="col-span-12 lg:col-span-4 flex flex-col gap-4 h-auto lg:h-full overflow-hidden order-3">
+            
+            <div id="pdf-drop-zone" class="relative w-full min-h-[110px] sm:min-h-[140px] bg-slate-950/40 border-2 border-dashed border-slate-800 hover:border-purple-500/40 rounded-3xl flex flex-col items-center justify-center p-4 text-center transition-all group cursor-pointer shrink-0">
+                <input type="file" id="pdf-compression-input" accept="application/pdf" onchange="loadPDFDocumentToCompressionPipeline(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-2 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-file-shield text-base"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200">Drag & Drop Large PDF File Here</h4>
+                <p class="text-[10px] text-slate-500 mt-1 max-w-[240px] hidden xs:block">Select a file to parse into the down-sampling optimization matrix.</p>
+            </div>
+
+            <div class="bg-slate-950/30 border border-slate-800/60 rounded-3xl p-4 flex flex-col gap-3 flex-1 overflow-hidden min-h-0">
+                <div class="flex items-center justify-between border-b border-slate-900/80 pb-2 shrink-0">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Optimization Matrix Monitor</span>
+                    <div id="processing-loader-indicator" class="hidden items-center gap-2 text-xs font-bold text-purple-400 tracking-widest font-mono">
+                        <i class="fa-solid fa-circle-notch animate-spin"></i> Organizing Blobs...
+                    </div>
+                </div>
+
+                <div class="w-full max-h-[35vh] lg:max-h-none overflow-y-auto no-scrollbar pr-1 flex-1 flex flex-col items-center justify-start">
+                    
+                    <div id="empty-buffer-list-state" class="py-12 sm:py-16 flex flex-col items-center justify-center text-slate-600 gap-1.5 select-none my-auto">
+                        <i class="fa-solid fa-chart-line text-xl mb-1 text-slate-700"></i>
+                        <span class="text-xs font-medium text-center">No metrics available. Mount a target document block.</span>
+                    </div>
+
+                    <div id="analytics-metrics-panel" class="hidden w-full flex flex-col gap-3.5 animate-fade-in pt-1">
+                        
+                        <div class="bg-slate-900/40 border border-slate-800 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-slate-500 font-bold">Staged Manifest File</span>
+                            <div class="flex flex-col gap-0.5">
+                                <h4 id="metrics-filename-lbl" class="text-xs font-bold text-slate-200 truncate max-w-full">document.pdf</h4>
+                                <span id="metrics-size-lbl" class="text-[11px] font-mono font-bold text-purple-400 mt-0.5">Original: --</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 border border-purple-950/40 border-2 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-purple-400 font-bold">Target Space Estimates</span>
+                            <div class="flex flex-col gap-0.5">
+                                <h4 id="metrics-target-size-lbl" class="text-xs font-bold text-fuchsia-400 font-mono">Estimated: --</h4>
+                                <span id="metrics-saved-percentage-lbl" class="text-[11px] font-mono font-bold text-slate-500 mt-0.5">Space Reduction: --</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/20 border border-slate-900 rounded-xl p-3 flex flex-col gap-1">
+                            <div class="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold">
+                                <span>Optimization Value Visualizer</span>
+                                <span id="graph-percentage-lbl" class="text-fuchsia-400">0% Shrunk</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-950 border border-slate-900 rounded-full overflow-hidden mt-1 p-0.5">
+                                <div id="metrics-visual-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-fuchsia-400 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PROCESSING SHIELD OVERLAY -->
+    <div id="matrix-processing-overlay" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[1200] flex flex-col items-center justify-center gap-4 select-none">
+        <div class="relative w-16 h-16 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-4 border-t-purple-400 border-r-purple-500/10 border-b-purple-500/10 border-l-purple-500/10 animate-spin [animation-duration:1s]"></div>
+            <div class="absolute w-10 h-10 rounded-full border-4 border-b-fuchsia-400 border-t-fuchsia-500/10 border-r-fuchsia-500/10 border-l-fuchsia-500/10 animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
+            <i class="fa-solid fa-atom text-purple-400 text-lg animate-pulse"></i>
+        </div>
+        <div class="flex flex-col items-center gap-1 text-center px-4">
+            <h4 class="text-sm font-extrabold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-fuchsia-400 font-mono">Compressing PDF Structure</h4>
+            <p id="overlay-status-label" class="text-[11px] text-slate-500 font-mono">Optimizing cryptographic stream layers...</p>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX OVERLAY WINDOW -->
+    <div id="lightbox-modal-window" onclick="closeLightboxModalViewport()" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[1100] animate-fade-in flex flex-col items-center justify-center p-4 cursor-zoom-out">
+        <button onclick="closeLightboxModalViewport()" class="absolute top-6 right-6 w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer text-lg">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-[90vw] max-h-[82vh] relative flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <img id="lightbox-preview-node-img" class="max-w-full max-h-[78vh] object-contain rounded-2xl border border-slate-800/60 shadow-2xl select-none" src="" alt="HD Context Preview Frame">
+            <span id="lightbox-index-badge" class="mt-3 text-xs font-mono font-bold uppercase text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-lg">Staged Page Frame</span>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Local sandbox optimization runtime PDF compiler blocks.
+    </footer>
+
+    <script src="../../assets/js/pdfEnhancement/compress-pdf.js"></script>
+</body>
+</html>

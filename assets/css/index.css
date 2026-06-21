@@ -1,0 +1,40 @@
+/* Core Imports & Resets */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap");
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: #060913;
+  min-height: 100vh;
+}
+
+/* Layout Locks (Prevents scrolling during load) */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* Component Effects */
+.ambient-glow { box-shadow: 0 0 60px -20px rgba(20, 184, 166, 0.12); }
+.metrics-card-glow { box-shadow: 0 0 20px -5px rgba(20, 184, 166, 0.1), inset 0 0 12px rgba(15, 23, 42, 0.6); }
+
+.feature-card {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 40px -15px rgba(20, 184, 166, 0.15);
+}
+
+/* Transition & Utility States */
+.loading-pane-transition {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hidden, .category-hidden { display: none !important; }

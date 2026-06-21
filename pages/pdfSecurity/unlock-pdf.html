@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Unlock Cipher Core // FusionMint Laboratory</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+    
+    <link rel="stylesheet" href="../../assets/css/pdfSecurity/unlock-pdf.css">
+</head>
+<body class="no-scrollbar text-slate-200 min-h-screen flex flex-col pt-24 overflow-y-auto lg:overflow-hidden">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-teal-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+   <div class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/50">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-atom text-slate-950 text-xs animate-spin [animation-duration:16s]"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-teal-400">Mint</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+
+            <div class="flex justify-end items-center gap-2 sm:gap-3 w-1/3 shrink-0">
+                <button id="btn-fullscreen-presentation" disabled onclick="toggleFullscreenPresentation()" class="hidden px-2.5 sm:px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-300 text-slate-950 rounded-xl shadow-md cursor-pointer flex items-center gap-1.5 transition-all">
+                    <i class="fa-solid fa-expand text-[11px]"></i> 
+                    <span class="hidden md:inline">Presentation Mode</span>
+                    <span class="inline md:hidden">Full</span>
+                </button>
+                
+                <div id="runtime-badge" class="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span id="runtime-status-text" class="hidden sm:inline">Booting Python WASM...</span>
+                    <span class="inline sm:hidden">WASM</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch overflow-visible lg:overflow-hidden h-auto lg:h-[calc(100vh-5rem)]">
+        
+        <div class="col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col gap-4 h-auto lg:h-full overflow-visible lg:overflow-hidden order-2 lg:order-1">
+            <div class="bg-slate-950/40 border border-slate-800/60 rounded-2xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-visible lg:overflow-y-auto no-scrollbar shadow-2xl">
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-teal-400"></i> Unlock Config
+                    </h3>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Output Filename Suffix</span>
+                        <input type="text" id="pdf-output-filename" value="unlocked_document_package" class="w-full bg-slate-900 border border-slate-800 text-sm font-medium text-slate-200 font-mono rounded-xl px-3 py-2.5 focus:outline-none focus:border-teal-500/40">
+                    </div>
+
+                    <div id="security-parameters-wrapper" class="hidden flex flex-col gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Current Security Key Password</span>
+                        <div class="relative flex items-center">
+                            <input type="password" id="pdf-decryption-password" class="w-full bg-slate-950 border border-slate-800 text-sm font-medium font-mono text-slate-200 rounded-xl pl-3 pr-10 py-2.5 focus:outline-none focus:border-teal-500/40" placeholder="Enter file password...">
+                            <button onclick="togglePasswordInputMaskField()" class="absolute right-3 text-slate-500 hover:text-slate-300 cursor-pointer">
+                                <i id="password-toggle-icon" class="fa-solid fa-eye text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
+                        Encrypted security encryption flags are stripped from the target file stream inside an isolated client-side memory segment.
+                    </p>
+                </div>
+
+                <div id="compilation-actions-deck" class="hidden flex flex-col gap-2.5 pt-4 border-t border-slate-900 shrink-0 mt-4 lg:mt-0">
+                    <button id="unlock-btn" disabled onclick="executePythonPDFUnlockOperation(false)" class="w-full min-h-[40px] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-key text-xs"></i> Unlock Document
+                    </button>
+
+                    <button id="download-btn" disabled onclick="executePythonPDFUnlockOperation(true)" class="w-full min-h-[40px] bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-1.5 cursor-not-allowed">
+                        <i class="fa-solid fa-cloud-arrow-down text-xs"></i> Download Unlocked PDF
+                    </button>
+                    
+                    <button onclick="purgeActiveUnlockPipeline()" class="w-full py-2 bg-slate-900/60 hover:bg-red-950/30 border border-slate-800 hover:border-red-900/50 text-[10px] text-slate-400 hover:text-red-400 uppercase font-extrabold tracking-widest rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> Purge Staged File
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-4 xl:col-span-5 flex flex-col gap-4 items-center justify-center bg-slate-950/10 border border-slate-900/60 rounded-3xl p-4 sm:p-6 min-h-[380px] lg:min-h-0 relative overflow-hidden transition-all duration-300 order-1 lg:order-2">
+            <span id="manifest-title-lbl" class="absolute top-3 left-3 text-[9px] uppercase font-bold tracking-widest bg-slate-950/90 text-teal-400 border border-slate-900/40 px-2.5 py-1 rounded-md z-40">Live Document Simulator Preview</span>
+
+            <button id="floating-prev" onclick="navigateSimulatorPageFrames(-1)" class="hidden absolute left-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-slate-950/80 border border-slate-800/80 text-teal-400 shadow-2xl backdrop-blur-md items-center justify-center hover:bg-teal-500 hover:text-slate-950 hover:scale-105 transition-all cursor-pointer">
+                <i class="fa-solid fa-chevron-left text-base"></i>
+            </button>
+            <button id="floating-next" onclick="navigateSimulatorPageFrames(1)" class="hidden absolute right-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-slate-950/80 border border-slate-800/80 text-teal-400 shadow-2xl backdrop-blur-md items-center justify-center hover:bg-teal-500 hover:text-slate-950 hover:scale-105 transition-all cursor-pointer">
+                <i class="fa-solid fa-chevron-right text-base"></i>
+            </button>
+
+            <div id="pdf-paper-sheet-simulator" class="relative bg-white text-slate-950 w-full max-w-[280px] sm:max-w-[320px] aspect-[210/297] rounded-xl preview-sheet-shadow flex items-start justify-start overflow-hidden mt-6 mx-auto z-10">
+                <div id="simulator-empty-callout" class="w-full h-full text-center text-slate-400 flex flex-col items-center justify-center gap-1.5 p-4 my-auto">
+                    <i class="fa-solid fa-shield-halved text-xl text-teal-500/30 animate-pulse"></i>
+                    <p class="text-[10px] font-bold uppercase tracking-wider">No Secure Document Staged</p>
+                </div>
+                
+                <div id="simulator-raster-frame" class="w-full h-full relative hidden">
+                    <canvas id="pdf-render-canvas"></canvas>
+                </div>
+            </div>
+
+            <div id="simulator-pagination-deck" class="hidden items-center gap-3 bg-slate-950/60 border border-slate-900 px-4 py-2 rounded-xl text-xs font-mono font-bold select-none z-30 relative mt-2">
+                <button onclick="navigateSimulatorPageFrames(-1)" class="text-slate-400 hover:text-teal-400 transition-colors cursor-pointer"><i class="fa-solid fa-chevron-left"></i></button>
+                <span id="simulator-page-index-label" class="text-[11px] text-slate-300">Page 1 / 1</span>
+                <button onclick="navigateSimulatorPageFrames(1)" class="text-slate-400 hover:text-teal-400 transition-colors cursor-pointer"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-4 xl:col-span-4 flex flex-col gap-4 h-auto lg:h-full overflow-visible lg:overflow-hidden order-3">
+            <div id="pdf-drop-zone" class="relative w-full min-h-[140px] bg-slate-950/40 border-2 border-dashed border-slate-800 hover:border-teal-500/40 rounded-3xl flex flex-col items-center justify-center p-4 text-center group cursor-pointer shrink-0 shadow-2xl">
+                <input type="file" id="pdf-pipeline-input" accept="application/pdf" onchange="loadEncryptedPDFToPipeline(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
+                <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center mb-2"><i class="fa-solid fa-file-shield text-base"></i></div>
+                <h4 class="text-xs font-bold text-slate-200">Drag &amp; Drop Protected PDF Here</h4>
+            </div>
+
+            <div class="bg-slate-950/30 border border-slate-800/60 rounded-3xl p-4 flex flex-col gap-3 flex-1 overflow-visible lg:overflow-hidden min-h-[200px] lg:min-h-0 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-slate-900/80 pb-2 shrink-0">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Pipeline Performance Matrix</span>
+                </div>
+                <div class="w-full overflow-y-auto no-scrollbar flex-1 flex flex-col items-center justify-start min-h-[120px] lg:min-h-0">
+                    <div id="empty-buffer-list-state" class="py-16 flex flex-col items-center justify-center text-slate-600 gap-1.5 select-none my-auto">
+                        <i class="fa-solid fa-chart-line text-xl mb-1 text-slate-700"></i>
+                        <span class="text-xs font-medium text-center">No system analytics available. Mount a secured target file.</span>
+                    </div>
+
+                    <div id="analytics-metrics-panel" class="hidden w-full flex flex-col gap-3.5 pt-1">
+                        <div class="bg-slate-900/40 border border-slate-800 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-slate-500 font-bold">Staged Encrypted Asset</span>
+                            <div class="flex flex-col gap-0.5">
+                                <h4 id="metrics-filename-lbl" class="text-xs font-bold text-slate-200 truncate max-w-full">protected.pdf</h4>
+                                <span id="metrics-size-lbl" class="text-[11px] font-mono font-bold text-teal-400 mt-0.5">Size: -- KB</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-900/40 border border-teal-950/40 border-2 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-teal-400 font-bold">Cipher Security Status</span>
+                            <div class="flex flex-col gap-0.5">
+                                <h4 id="metrics-encryption-type-lbl" class="text-xs font-bold text-red-400 font-mono">Status: Password Required</h4>
+                                <span id="metrics-pages-lbl" class="text-[11px] font-mono font-bold text-slate-500 mt-0.5">Total Pages Found: --</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="matrix-processing-overlay" class="invisible opacity-0 fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[999] flex flex-col items-center justify-center gap-4 select-none pointer-events-none transition-all duration-300 [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+        <div class="anim-target scale-90 flex flex-col items-center justify-center gap-4 transition-transform duration-300">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-t-teal-400 border-r-teal-500/10 border-b-teal-500/10 border-l-teal-500/10 animate-spin [animation-duration:1s]"></div>
+                <div class="absolute w-10 h-10 rounded-full border-4 border-b-emerald-400 border-t-emerald-500/10 border-r-emerald-500/10 border-l-emerald-500/10 animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
+                <i class="fa-solid fa-atom text-teal-400 text-lg animate-pulse"></i>
+            </div>
+            <div class="flex flex-col items-center gap-1 text-center">
+                <h4 id="overlay-main-title" class="text-sm font-extrabold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-400 font-mono">Baking Operation Pipeline</h4>
+                <p id="overlay-status-label" class="text-[11px] text-slate-500 font-mono">Assembling matrix cryptographic structures...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side Cryptographic Vector Paths Compilation Blocks.
+    </footer>
+
+    <script src="../../assets/js/pdfSecurity/unlock-pdf.js"></script>
+</body>
+</html>

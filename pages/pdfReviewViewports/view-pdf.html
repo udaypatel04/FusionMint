@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced PDF Viewer Matrix // FusionMint Laboratory</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="stylesheet" href="../../assets/css/pdfReviewViewports/view-pdf.css">
+
+</head>
+<body class="no-scrollbar text-slate-200 min-h-screen flex flex-col overflow-hidden pt-16">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-sky-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <div class="fixed top-0 left-0 right-0 z-50 px-6 py-3.5 bg-slate-950/60 backdrop-blur-xl border-b border-slate-900 shadow-2xl">
+        <nav class="w-full max-w-7xl mx-auto flex items-center justify-between">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/4">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-500 to-blue-400 flex items-center justify-center shadow-md shadow-sky-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-eye text-slate-950 text-xs animate-pulse"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight">Fusion<span class="text-sky-400">Mint</span></span>
+            </div>
+            
+            <div class="flex justify-center w-2/4">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+
+            <div class="flex justify-end items-center gap-2 w-1/4">
+                <button id="btn-fullscreen-presentation" disabled onclick="toggleFullscreenPresentation()" class="hidden px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-sky-500 to-blue-500 hover:from-sky-400 hover:to-blue-400 text-slate-950 rounded-xl shadow-md cursor-pointer items-center gap-1.5 shrink-0 animate-fade-in">
+                    <i class="fa-solid fa-book-open text-[11px]"></i> Book Spread Mode
+                </button>
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+                    <span>Viewer Workspace</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <main class="w-full max-w-[98%] mx-auto px-4 py-2 flex-1 grid grid-cols-12 gap-5 relative z-10 items-stretch overflow-hidden h-[calc(100vh-5rem)]">
+        
+        <div class="col-span-12 lg:col-span-3 flex flex-col gap-4 h-full overflow-hidden">
+            <div class="bg-slate-950/40 border border-slate-800/60 rounded-2xl p-4 flex flex-col gap-4 flex-1 justify-between overflow-y-auto no-scrollbar">
+                
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-sky-400"></i> Viewport Options
+                    </h3>
+                    
+                    <div id="zoom-controls-wrapper" class="hidden flex-col gap-2 p-3 bg-slate-900/40 border border-slate-800/60 rounded-xl animate-fade-in">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Scale Magnification</span>
+                        <div class="flex items-center justify-between bg-slate-950 p-1.5 rounded-lg border border-slate-900">
+                            <button onclick="adjustScaleRatio(-0.15)" class="w-7 h-7 rounded bg-slate-900 hover:bg-slate-850 text-xs text-slate-300 flex items-center justify-center transition-colors cursor-pointer"><i class="fa-solid fa-minus"></i></button>
+                            <span id="lbl-zoom-percent" class="text-xs font-mono font-bold text-sky-400">100%</span>
+                            <button onclick="adjustScaleRatio(0.15)" class="w-7 h-7 rounded bg-slate-900 hover:bg-slate-850 text-xs text-slate-300 flex items-center justify-center transition-colors cursor-pointer"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="navigation-tracker-wrapper" class="hidden p-3 bg-slate-900/50 border border-slate-800/80 rounded-xl flex flex-col gap-3 font-mono text-xs animate-fade-in">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 font-sans">Sequence Control</span>
+                        <div class="flex items-center justify-between bg-slate-950/60 border border-slate-900 px-3 py-2 rounded-xl text-xs font-mono font-bold w-full">
+                            <button onclick="navigateViewerManualPageSteps(-1)" class="text-slate-400 hover:text-sky-400 transition-colors cursor-pointer"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span id="lbl-page-index" class="text-[11px] text-slate-300">0 / 0</span>
+                            <button onclick="navigateViewerManualPageSteps(1)" class="text-slate-400 hover:text-sky-400 transition-colors cursor-pointer"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+
+                        <div class="flex flex-col gap-1.5 mt-1 pt-2 border-t border-slate-900">
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500 font-sans">Jump To Page</span>
+                            <div class="flex items-center bg-slate-950 border border-slate-900 rounded-lg px-2 py-1">
+                                <input type="number" id="input-page-jump" min="1" placeholder="Page..." onkeydown="if(event.key==='Enter') executeManualPageJumpMatrix(this.value)" class="w-full bg-transparent text-xs font-bold text-sky-400 focus:outline-none font-mono">
+                                <button onclick="executeManualPageJumpMatrix(document.getElementById('input-page-jump').value)" class="text-[10px] text-slate-400 hover:text-sky-400 transition-colors pl-1 cursor-pointer"><i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-500 leading-relaxed">
+                        Scroll down the canvas layout view natively, use the arrow keys, or input a specific target sheet index to jump coordinates instantly.
+                    </p>
+                </div>
+
+                <div id="compilation-actions-deck" class="hidden flex-col gap-3 pt-4 border-t border-slate-900 shrink-0">
+                    <div class="bg-slate-900/40 border border-slate-800 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-slate-500 font-bold">Staged Blueprint</span>
+                        <div class="flex flex-col gap-0.5">
+                            <h4 id="metrics-filename-lbl" class="text-xs font-bold text-slate-200 truncate max-w-full">document.pdf</h4>
+                            <span id="metrics-size-lbl" class="text-[11px] font-mono font-bold text-sky-400 mt-0.5">Size: -- KB</span>
+                        </div>
+                    </div>
+
+                    <button onclick="purgeActiveViewerPipeline()" class="w-full py-2.5 bg-slate-900/60 hover:bg-red-950/30 border border-slate-800 hover:border-red-900/50 text-xs text-slate-400 hover:text-red-400 uppercase font-extrabold tracking-widest rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> Unload Blueprint
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-9 flex flex-col gap-4 h-full overflow-hidden transition-all duration-300 relative">
+            
+            <div id="pdf-drop-zone" class="relative w-full min-h-[140px] bg-slate-950/40 border-2 border-dashed border-slate-800 hover:border-sky-500/40 rounded-3xl flex flex-col items-center justify-center p-4 text-center transition-all group cursor-pointer shrink-0">
+                <input type="file" id="pdf-pipeline-input" accept="application/pdf" onchange="loadPDFDocumentIntoViewerPipeline(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-2 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-file-pdf text-base"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-200">Drag & Drop Target PDF Map Here</h4>
+                <p class="text-xs text-slate-500 mt-1 max-w-[320px]">Mount document package file layers to execute high-fidelity reading sweeps.</p>
+            </div>
+
+            <div id="presentation-viewport-subframe" class="bg-slate-950/30 border border-slate-800/60 rounded-3xl p-5 flex flex-col gap-3 flex-1 overflow-hidden relative">
+                <div class="flex items-center justify-between border-b border-slate-900/80 pb-2.5 shrink-0">
+                    <span id="manifest-title-lbl" class="text-xs uppercase font-extrabold tracking-wider text-slate-400">Streamed Matrix Reading Sandbox Canvas</span>
+                </div>
+
+                <div id="manifest-scroll-track" class="w-full overflow-y-auto no-scrollbar pr-1 flex-1 flex flex-col gap-6 items-center py-4 bg-slate-950/20 border border-slate-900/40 rounded-2xl scroll-smooth">
+                    <div id="empty-sandbox-state" class="my-auto py-24 flex flex-col items-center justify-center text-slate-500 gap-1.5 select-none">
+                        <i class="fa-solid fa-compass-drafting text-2xl mb-1 text-slate-700"></i>
+                        <span class="text-xs font-medium">Staging compiler pipeline is empty. Mount file tracks above.</span>
+                    </div>
+                </div>
+
+                <div id="fullscreen-book-spread-viewport" class="hidden absolute inset-0 bg-[#04060c] z-40 flex-col items-center justify-center p-0 rounded-2xl animate-fade-in overflow-hidden select-none">
+                    <div class="flex items-center justify-center gap-6 w-full h-[96vh] overflow-hidden relative px-4">
+                        <div id="book-page-left" class="bg-white p-1 rounded-lg shadow-2xl flex items-center justify-center max-w-[49%] h-full transition-transform duration-200"></div>
+                        <div id="book-page-right" class="bg-white p-1 rounded-lg shadow-2xl flex items-center justify-center max-w-[49%] h-full transition-transform duration-200"></div>
+                    </div>
+                    
+                    <div class="fullscreen-hud-container">
+                        
+                        <div class="absolute left-6 top-1/2 -translate-y-1/2">
+                            <button id="hud-arrow-left" onclick="navigateViewerManualPageSteps(-2)" class="hud-interactive-element arrow-left-target w-14 h-14 rounded-2xl bg-slate-950/70 hover:bg-sky-500 border border-slate-800/80 text-slate-400 hover:text-slate-950 text-base flex items-center justify-center transition-all cursor-pointer backdrop-blur shadow-2xl shadow-black/60">
+                                <i class="fa-solid fa-chevron-left text-lg"></i>
+                            </button>
+                        </div>
+
+                        <div class="absolute right-6 top-1/2 -translate-y-1/2">
+                            <button id="hud-arrow-right" onclick="navigateViewerManualPageSteps(2)" class="hud-interactive-element arrow-right-target w-14 h-14 rounded-2xl bg-slate-950/70 hover:bg-sky-500 border border-slate-800/80 text-slate-400 hover:text-slate-950 text-base flex items-center justify-center transition-all cursor-pointer backdrop-blur shadow-2xl shadow-black/60">
+                                <i class="fa-solid fa-chevron-right text-lg"></i>
+                            </button>
+                        </div>
+
+                        <div class="absolute bottom-6 left-0 right-0 flex justify-center">
+                            <div id="hud-dock-bottom" class="hud-interactive-element dock-bottom-target flex items-center gap-5 bg-slate-950/90 border border-slate-800/80 px-6 py-3 rounded-2xl text-xs font-mono font-bold shadow-2xl shadow-black/80 backdrop-blur-xl">
+                                <button onclick="navigateViewerManualPageSteps(-2)" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-400 hover:text-sky-400 flex items-center justify-center transition-all cursor-pointer"><i class="fa-solid fa-arrow-left"></i></button>
+                                
+                                <div class="flex items-center gap-3 border-r border-l border-slate-900 px-2">
+                                    <button onclick="adjustScaleRatio(-0.15)" class="w-6 h-6 rounded bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                    <span id="lbl-fullscreen-zoom" class="text-xs text-sky-400 font-sans tracking-wide min-w-[40px] text-center">100%</span>
+                                    <button onclick="adjustScaleRatio(0.15)" class="w-6 h-6 rounded bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                                </div>
+
+                                <span id="lbl-fullscreen-page-index" class="text-slate-300 text-[11px] font-sans tracking-tight min-w-[100px] text-center">Pages 1-2 / --</span>
+                                
+                                <div class="flex items-center bg-slate-900 border border-slate-800 px-2 py-1 rounded-xl w-24">
+                                    <input type="number" id="input-fullscreen-page-jump" min="1" placeholder="Go to..." onkeydown="if(event.key==='Enter') executeManualPageJumpMatrix(this.value)" class="w-full bg-transparent text-center font-sans font-bold text-sky-400 focus:outline-none text-[11px]">
+                                </div>
+
+                                <button onclick="navigateViewerManualPageSteps(2)" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-400 hover:text-sky-400 flex items-center justify-center transition-all cursor-pointer"><i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="matrix-processing-overlay" class="invisible opacity-0 fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[200] flex flex-col items-center justify-center gap-4 select-none pointer-events-none transition-all duration-300 [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+        <div class="anim-target scale-90 flex flex-col items-center justify-center gap-4 transition-transform duration-300">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-t-sky-400 border-r-sky-500/10 border-b-sky-500/10 border-l-sky-500/10 animate-spin [animation-duration:1s]"></div>
+                <div class="absolute w-10 h-10 rounded-full border-4 border-b-sky-400 border-t-sky-500/10 border-r-sky-500/10 border-l-sky-500/10 animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
+                <i class="fa-solid fa-atom text-sky-400 text-lg animate-pulse"></i>
+            </div>
+            <div class="flex flex-col items-center gap-1 text-center">
+                <h4 id="overlay-main-title" class="text-sm font-extrabold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-sky-300 font-mono">Baking Operation Pipeline</h4>
+                <p id="overlay-status-label" class="text-[11px] text-slate-500 font-mono">Writing spatial layout context definitions...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Local sandbox optimization runtime PDF document reading system modules.
+    </footer>
+
+    <script src="../../assets/js/commonJS/mobile-device-hide-page.js"></script>
+    <script src="../../assets/js/pdfReviewViewports/view-pdf.js"></script>
+</body>
+</html>

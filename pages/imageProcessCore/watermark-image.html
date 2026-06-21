@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Image Watermark Lab // FusionMint Laboratory</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../../assets/css/imageProcessCore/watermark-image.css">
+    
+</head>
+<body class="no-scrollbar text-slate-200 min-h-screen flex flex-col pt-24 overflow-y-auto lg:overflow-hidden">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-teal-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+   <div class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/50">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-atom text-slate-950 text-xs animate-spin [animation-duration:16s]"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-teal-400">Mint</span></span>
+            </div>
+
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end w-1/3 shrink-0">
+                <div id="runtime-badge" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="runtime-status-text" class="hidden sm:inline">Matrix Canvas Enabled</span>
+                    <span class="inline sm:hidden">Canvas</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch overflow-visible lg:overflow-hidden h-auto lg:h-[calc(100vh-5rem)]">
+        
+        <div id="sidebar-configuration-area" class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col h-auto lg:h-full overflow-visible lg:overflow-hidden order-2 lg:order-1">
+            <div class="bg-slate-950/50 border border-slate-800/80 rounded-2xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-visible lg:overflow-y-auto no-scrollbar shadow-2xl backdrop-blur-md">
+                
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-3">
+                        <h3 class="text-xs uppercase font-black tracking-widest text-slate-400 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-teal-400 animate-pulse"></i> Geometry Control Panel
+                        </h3>
+                        <span id="page-total-badge" class="hidden text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2.5 py-1 rounded-md shadow-sm">0x0 Px</span>
+                    </div>
+                    
+                    <div class="bg-slate-900/40 border border-slate-900 p-3 sm:p-4 rounded-xl flex items-center justify-between gap-4 shadow-sm">
+                        <div class="flex flex-col gap-1 min-w-0">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Target Anchor</span>
+                            <div class="flex items-center gap-1 text-[10px] font-mono text-slate-500">
+                                <span>Active:</span>
+                                <span id="matrix-status-lbl" class="text-teal-400 font-bold uppercase font-sans">Center Center</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-slate-950 p-2 rounded-xl border border-slate-900/60 flex-shrink-0">
+                            <div class="grid grid-cols-3 gap-1 w-16 h-16 bg-slate-900/60 p-1 rounded-md border border-slate-800/80">
+                                <button onclick="setMatrixTargetAnchor('top', 'left')" id="dot-top-left" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('top', 'center')" id="dot-top-center" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('top', 'right')" id="dot-top-right" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('center', 'left')" id="dot-center-left" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('center', 'center')" id="dot-center-center" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer selected"></button>
+                                <button onclick="setMatrixTargetAnchor('center', 'right')" id="dot-center-right" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('bottom', 'left')" id="dot-bottom-left" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('bottom', 'center')" id="dot-bottom-center" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                                <button onclick="setMatrixTargetAnchor('bottom', 'right')" id="dot-bottom-right" class="matrix-grid-dot border border-slate-800 rounded bg-slate-950 cursor-pointer"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="numbering-parameters-wrapper" class="hidden flex flex-col gap-4">
+                        <div class="grid grid-cols-2 gap-3 bg-slate-900/20 p-3 sm:p-4 border border-slate-900/60 rounded-xl shadow-sm">
+                            <div class="flex flex-col gap-1.5 col-span-2 sm:col-span-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Watermark Mode Preset</span>
+                                <select id="watermark-preset-select" onchange="toggleWatermarkTypeInputContext()" class="w-full bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-300 rounded-xl px-2.5 py-2.5 focus:outline-none focus:border-teal-500/40 cursor-pointer">
+                                    <option value="custom" selected>Custom Text</option>
+                                    <option value="image">Custom Image</option>
+                                    <option value="date">Date Stamp</option>
+                                    <option value="datetime">Time Snapshot</option>
+                                    <option value="author">Author Token</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex flex-col gap-1.5 col-span-2 sm:col-span-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Export Encoding</span>
+                                <select id="export-image-mime" class="w-full bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-300 rounded-xl px-2.5 py-2.5 focus:outline-none focus:border-teal-500/40 cursor-pointer">
+                                    <option value="image/png" selected>PNG (Lossless)</option>
+                                    <option value="image/jpeg">JPEG (Standard)</option>
+                                    <option value="image/webp">WEBP (Next-Gen)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/20 p-3 sm:p-4 border border-slate-900/60 rounded-xl shadow-sm">
+                            <div id="wrapper-text-input" class="flex flex-col gap-1.5 w-full">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Watermark Text Core</span>
+                                <input type="text" id="watermark-input-string" value="CONFIDENTIAL" oninput="synchronizeThumbnailsIndicationBadges()" class="w-full bg-slate-950 border border-slate-800 text-xs font-medium text-slate-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-teal-500/40 font-mono tracking-wide">
+                            </div>
+
+                            <div id="wrapper-image-input" class="hidden flex flex-col gap-1.5 w-full">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stamp Image Source</span>
+                                <input type="file" id="watermark-image-file" accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml" onchange="cacheUploadedWatermarkImageBufferTrack(this)" class="w-full bg-slate-950 border border-slate-800 text-xs font-medium text-slate-400 rounded-xl px-2.5 py-2 focus:outline-none focus:border-teal-500/40 cursor-pointer file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-mono file:bg-slate-900 file:text-slate-300">
+                                <span id="image-cache-status-lbl" class="text-[9px] font-mono text-slate-500 px-0.5 mt-2 block truncate">No stamp file attached.</span>
+                            </div>
+                        </div>
+
+                        <div id="wrapper-typography-styles" class="grid grid-cols-2 gap-3 bg-slate-900/20 p-3 sm:p-4 border border-slate-900/60 rounded-xl shadow-sm">
+                            <div class="flex flex-col gap-1.5">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Weight</span>
+                                <select id="watermark-font-weight" onchange="synchronizeThumbnailsIndicationBadges()" class="w-full bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-300 rounded-xl px-2 py-2 focus:outline-none focus:border-teal-500/40 cursor-pointer">
+                                    <option value="normal">Normal</option>
+                                    <option value="bold" selected>Bold</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Posture</span>
+                                <select id="watermark-font-style" onchange="synchronizeThumbnailsIndicationBadges()" class="w-full bg-slate-950 border border-slate-800 text-xs font-semibold text-slate-300 rounded-xl px-2 py-2 focus:outline-none focus:border-teal-500/40 cursor-pointer">
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="italic">Italic</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/30 border border-slate-900 rounded-xl p-3 sm:p-4 flex flex-col gap-4 shadow-inner">
+                            <div class="flex flex-col gap-2 w-full">
+                                <div class="flex justify-between items-center w-full text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-half-stroke text-teal-500"></i> Opacity Channel</span>
+                                    <span id="opacity-slider-value" class="text-[10px] font-mono bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded font-black min-w-[42px] text-center shadow-inner">100%</span>
+                                </div>
+                                <input type="range" id="watermark-opacity-range" min="0.0" max="1.0" step="0.05" value="1.0" oninput="updateOpacitySliderTrackerLabel()" class="w-full h-2 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-teal-500">
+                            </div>
+
+                            <div class="flex flex-col gap-2 w-full border-t border-slate-900/80 pt-3.5">
+                                <div class="flex justify-between items-center w-full text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-wand-magic-sparkles text-teal-500"></i> Blur FX Radius</span>
+                                    <span id="blur-slider-value" class="text-[10px] font-mono bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded font-black min-w-[92px] text-center shadow-inner">0px (Pristine)</span>
+                                </div>
+                                <input type="range" id="watermark-blur-range" min="0" max="12" step="1" value="0" oninput="updateBlurSliderTrackerLabel()" class="w-full h-2 bg-slate-955 rounded-lg appearance-none cursor-pointer accent-teal-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/20 border border-slate-900 p-3 sm:p-4 rounded-xl flex flex-col gap-1.5 shadow-sm">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Output Suffix Name</span>
+                        <div class="flex items-center bg-slate-950 border border-slate-800 rounded-xl px-3 py-1">
+                            <input type="text" id="pdf-output-filename" value="watermarked_image_export" class="w-full bg-transparent py-2 text-xs font-medium font-mono text-slate-200 focus:outline-none min-w-0">
+                            <select id="export-image-quality" class="bg-slate-900 border border-slate-800 text-[10px] font-mono font-bold text-slate-400 px-1 py-1 rounded focus:outline-none cursor-pointer shrink-0 ml-1">
+                                <option value="1.0">Q: 100%</option>
+                                <option value="0.92" selected>Q: 92%</option>
+                                <option value="0.75">Q: 75%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="compilation-actions-deck" class="hidden flex flex-col gap-2 pt-3 border-t border-slate-900 shrink-0 mt-4 lg:mt-0">
+                    <button id="lock-btn" disabled onclick="processAndDownloadWatermarkedImage()" class="w-full min-h-[46px] bg-gradient-to-r from-teal-500 via-teal-400 to-emerald-500 hover:opacity-90 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-xs"></i> Process &amp; Export Image Asset
+                    </button>
+                    <button onclick="purgeActiveWatermarkPipeline()" class="w-full py-2 bg-slate-900/60 hover:bg-red-950/20 border border-slate-900 hover:border-red-900/40 text-[10px] text-slate-400 hover:text-red-400 uppercase font-bold tracking-widest rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> Purge Staged File
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-7 xl:col-span-8 flex flex-col gap-4 h-auto lg:h-full overflow-visible lg:overflow-hidden pb-6 lg:pb-0 order-1 lg:order-2">
+            <div id="pdf-drop-zone" class="relative w-full min-h-[130px] bg-slate-950/40 border-2 border-dashed border-slate-800 hover:border-teal-500/40 rounded-2xl flex flex-col items-center justify-center p-4 text-center group cursor-pointer shrink-0 transition-colors">
+                <input type="file" id="pdf-pipeline-input" accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml" onchange="loadTargetImageFileToWorkspace(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
+                <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center mb-2"><i class="fa-solid fa-images text-base"></i></div>
+                <h4 class="text-xs font-bold text-slate-200">Drag &amp; Drop Target Image File Asset Here</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">Supports PNG, JPG, JPEG, WEBP, and vector SVG files. <span class="text-red-400 font-bold">GIF files are rejected.</span></p>
+            </div>
+
+            <div id="presentation-viewport-subframe" class="bg-slate-950/30 border border-slate-800/60 rounded-3xl p-4 flex flex-col gap-3 flex-1 overflow-visible lg:overflow-hidden min-h-[360px] lg:min-h-0 relative">
+                <div class="flex items-center justify-between border-b border-slate-900/80 pb-2 shrink-0">
+                    <span class="text-xs uppercase font-extrabold tracking-wider text-slate-400">Staged Sheet Monitor Frame</span>
+                    <div class="flex items-center gap-3">
+                        <span id="pipeline-inline-log" class="hidden text-[10px] font-mono font-bold bg-slate-900 border px-2.5 py-1 rounded text-emerald-400 border-emerald-500/20"></span>
+                    </div>
+                </div>
+
+                <div id="thumbnails-scroll-frame" class="w-full overflow-y-auto no-scrollbar pr-1 flex-1 flex items-center justify-center min-h-[260px] lg:min-h-0 relative">
+                    <div id="empty-workspace-callout" class="py-24 flex flex-col items-center justify-center text-slate-600 gap-1.5 select-none my-auto">
+                        <i class="fa-solid fa-cubes text-xl mb-1 text-slate-700 animate-pulse"></i>
+                        <span class="text-xs font-semibold text-center uppercase tracking-wider">No Active Image Mounted</span>
+                    </div>
+                    
+                    <div id="live-image-frame-wrapper" class="relative hidden bg-white rounded-lg overflow-hidden border border-slate-950 shadow-2xl max-w-full max-h-[52vh] sm:max-h-[60vh] transition-all">
+                        <img id="workspace-source-img-node" class="object-contain max-w-full max-h-[52vh] sm:max-h-[60vh] select-none pointer-events-none" src="" alt="Workspace Context Track">
+                        <span id="live-mock-num-preview" class="absolute select-none uppercase tracking-wide pointer-events-none transition-all duration-150 break-words max-w-[80%] text-center whitespace-nowrap"></span>
+                        <img id="live-mock-img-preview" class="absolute hidden max-w-[20%] object-contain select-none pointer-events-none transition-all duration-150" src="" alt="Stamp matrix">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="matrix-processing-overlay" class="invisible opacity-0 fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[999] flex flex-col items-center justify-center gap-4 select-none pointer-events-none transition-all duration-300 [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+        <div class="anim-target scale-90 flex flex-col items-center justify-center gap-4 transition-transform duration-300">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-t-teal-400 border-r-teal-500/10 border-b-teal-500/10 border-l-teal-500/10 animate-spin [animation-duration:1s]"></div>
+                <div class="absolute w-10 h-10 rounded-full border-4 border-b-emerald-400 border-t-emerald-500/10 border-r-emerald-500/10 border-l-emerald-500/10 animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
+                <i class="fa-solid fa-atom text-teal-400 text-lg animate-pulse"></i>
+            </div>
+            <div class="flex flex-col items-center gap-1 text-center">
+                <h4 id="overlay-main-title" class="text-sm font-extrabold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-400 font-mono">Baking Operation Pipeline</h4>
+                <p id="overlay-status-label" class="text-[11px] text-slate-500 font-mono">Assembling matrix structures...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/imageProcessCore/watermark-image.js"></script>
+</body>
+</html>

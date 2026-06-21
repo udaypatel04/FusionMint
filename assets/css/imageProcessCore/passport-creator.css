@@ -1,0 +1,58 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #060913; 
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+.no-scrollbar {
+    &::-webkit-scrollbar { display: none; }
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+img, canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+/* Biometric crosshair grid lines over the picture canvas */
+.biometric-overlay {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(20, 184, 166, 0.25);
+    pointer-events: none;
+    display: none;
+    z-index: 30;
+}
+
+.biometric-oval {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 65%;
+    border: 2px dashed rgba(20, 184, 166, 0.6);
+    border-radius: 50%;
+}
+
+.biometric-line {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed rgba(20, 184, 166, 0.4);
+}
+
+/* Dark Theme Dropdown Overrides for Native System UI Engine Components */
+select option {
+    background-color: #090d1f !important;
+    color: #2dd4bf !important;
+}

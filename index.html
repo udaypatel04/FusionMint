@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>FusionMint // All-In-One Local Media Core & Science Engine</title>
+    <meta name="description" content="FusionMint is a fast, standalone local science engine and multi-tool suite for images, PDFs, and document conversions. Processes file layers natively without server exposures.">
+    <meta name="keywords" content="FusionMint, media engine, compress image, smart crop, PDF merge, PDF security, document converter, offline file tool, private image processing">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="FusionMint Laboratory">
+    <link rel="canonical" href="https://fusionmint.local/index.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="FusionMint // All-In-One Local Media Core">
+    <meta property="og:description" content="Optimize, secure, convert, and manage image layers and PDF vectors natively inside your local browser sandbox runtime environment.">
+    <meta property="og:url" content="https://fusionmint.local/index.html">
+    <meta property="og:site_name" content="FusionMint Workspace">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    
+</head>
+<body class="no-scrollbar text-slate-200 min-h-screen flex flex-col overflow-x-hidden pt-24">
+
+    <div id="fusionmint-global-loader" class="fixed inset-0 z-[100] bg-[#060913] flex flex-col items-center justify-center">
+        <div class="absolute inset-0 bg-gradient-to-b from-teal-500/5 to-transparent blur-3xl pointer-events-none"></div>
+        <div class="relative flex flex-col items-center gap-6 text-center">
+            <div class="relative w-20 h-20 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-teal-500 to-emerald-400 opacity-20 blur-xl animate-pulse"></div>
+                <div class="w-16 h-16 rounded-2xl bg-slate-950 border border-slate-800/80 flex items-center justify-center shadow-2xl">
+                    <i class="fa-solid fa-atom text-teal-400 text-3xl animate-spin [animation-duration:2.5s]"></i>
+                </div>
+                <div class="absolute w-24 h-24 border-2 border-dashed border-teal-500/20 rounded-full animate-spin [animation-duration:6s]"></div>
+            </div>
+            <div class="space-y-1.5 animate-pulse">
+                <h1 class="text-xl font-black text-white tracking-wider font-sans">Fusion<span class="text-teal-400">Mint</span></h1>
+                <p class="text-[10px] text-slate-500 font-mono uppercase tracking-widest">Initializing Sandbox Engine Core...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-teal-500/10 to-transparent blur-3xl pointer-events-none"></div>
+
+    <div class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/50" aria-label="Main Navigation Gateway">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-atom text-slate-950 text-xs animate-spin [animation-duration:16s]"></i>
+                </div>
+                <span class="text-base font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-teal-400">Mint</span></span>
+            </div>
+
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="index.html" class="hidden sm:inline px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="#library" class="px-3 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="pages/navBar/about.html" class="hidden sm:inline px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end w-1/3 shrink-0">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="hidden sm:inline">Sandbox Active</span>
+                    <span class="inline sm:hidden">Active</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-4 text-center relative z-10 flex flex-col items-center">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold bg-teal-500/10 text-teal-300 rounded-full border border-teal-500/20 mb-4">
+            <i class="fa-solid fa-bolt text-[10px] text-teal-400"></i> Localized Multi-Tool Suite
+        </span>
+        <h2 class="text-4xl sm:text-5xl font-black text-white tracking-tight max-w-3xl mx-auto leading-tight">
+            The Ultimate Science Engine for <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400">Images & Documents</span>
+        </h2>
+        
+        <div class="w-full max-w-xl mt-8 relative group">
+            <div class="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+            <div class="relative flex items-center bg-slate-950/80 backdrop-blur-xl border border-slate-800 focus-within:border-teal-500/50 rounded-2xl px-4 py-3.5 shadow-2xl transition-all">
+                <i class="fa-solid fa-magnifying-glass text-teal-400 text-sm mr-3.5"></i>
+                <input type="text" id="engine-search-bar" oninput="executeFeatureFuzzySearchLookup(this.value)" placeholder="Search localized modules (e.g., smart crop, pdf view, compressor)..." class="w-full bg-transparent text-sm text-slate-100 placeholder-slate-500 focus:outline-none font-medium">
+                <span id="search-counter-badge" class="hidden font-mono text-[10px] bg-slate-900 border border-slate-800 text-teal-400 font-bold px-2 py-0.5 rounded-md select-none">0 Found</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="library" class="max-w-7xl w-full mx-auto p-4 md:p-6 pb-24 relative z-10 flex flex-col gap-14">
+        
+        <div id="search-fallback-prompt" class="hidden py-16 flex-col items-center justify-center text-center text-slate-500 gap-2 select-none animate-fade-in">
+            <i class="fa-solid fa-compass-drafting text-3xl text-slate-700 mb-1"></i>
+            <h4 class="text-sm font-extrabold uppercase tracking-widest text-slate-400 font-mono">No Processing Tracks Found</h4>
+            <p class="text-xs text-slate-600 max-w-xs">Your lookup criteria dropped completely out of sandbox category matrices bounds.</p>
+        </div>
+
+        <section class="category-block-node" id="category-section-image-core" aria-labelledby="heading-image-core">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <h3 id="heading-image-core" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-photo-film text-teal-500"></i> Image Processing Core
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-bolt text-[9px]"></i> Localized Render Pipeline
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-file-image"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Compress Image</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Optimize file weights for PNG, JPG, and WebP layers instantly without dropping visual clarity.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Lossless Quant</span>
+                        <a href="pages/imageProcessCore/compress-image.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-crop-simple"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Smart Crop</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Precision framing tool. Snap your images to common social media aspect ratios (1:1, 9:16, 4:5) with live overlay masking.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Social Framing</span>
+                        <a href="pages/imageProcessCore/smart-crop.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-crop-simple"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Crop Image</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Trim edges and remove unwanted outer pixels interactively with bounding boxes or custom aspect ratio anchors.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Clip Boundaries</span>
+                        <a href="pages/imageProcessCore/crop-image.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-swatchbook"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Palette Engine</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Extract dominant color swatches from images. Automatically generate harmonic color schemes (complementary, analogous).</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Color Theory</span>
+                        <a href="pages/imageProcessCore/palette-engine.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-id-card"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Passport Creator</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Generate precise 1:1 biometrics crops and formal dimensional passport parameters ready for production.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Biometric Crop</span>
+                        <a href="pages/imageProcessCore/passport-creator.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-table-cells-large"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Collage Maker</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Stitch standalone elements into pristine modern multi-frame grid designs with custom gaps and margins.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Fluid Matrices</span>
+                        <a href="pages/imageProcessCore/collage-maker.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-stamp"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Watermark Image</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Protect graphic files properties by stamping custom imagery layers or translucent texts cleanly.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Raster Stamp</span>
+                        <a href="pages/imageProcessCore/watermark-image.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-rotate-right"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Rotate Image</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Change image orientations or flip angles cleanly using custom degree vectors or standard configurations.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Orientation Shift</span>
+                        <a href="pages/imageProcessCore/rotate-image.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-compress"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Resize Image</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Modify image file dimensions by scaling absolute percentages or targeting explicit pixel dimensions safely.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Scale Geometry</span>
+                        <a href="pages/imageProcessCore/resize-image.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-face-laugh-squint"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Meme Creator</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Superimpose customizable layout text headers and footers with impact alignment typography directly over graphical formats.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Culture Matrix</span>
+                        <a href="pages/imageProcessCore/meme-creator.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-user-secret"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Blur Faces</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Anonymize image layers automatically by tracking face boundaries client-side and applying variable canvas filter blocks.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Privacy Shield</span>
+                        <a href="pages/imageProcessCore/blur-face.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Image Studio</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Advanced parametric editing suite. Apply professional filter matrices and adjust comprehensive luminous/chroma layers entries structures.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Raster Studio</span>
+                        <a href="pages/imageProcessCore/image-studio.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="category-block-node" id="category-section-converters" aria-labelledby="heading-converters">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-900/80 pb-3">
+                <h3 id="heading-converters" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-rotate-left text-teal-500"></i> Document Converters
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-shuffle text-[9px]"></i> Matrix Remappers
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-file-image"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">JPG to PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Convert and pack raw images into beautifully structured vector PDF documents seamlessly.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Fast Convert</span>
+                        <a href="pages/documentConverters/jpg-to-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-file-word"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">WORD to PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Transform text runs, structural headings, and localized files into locked Adobe PDF format streams.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Vector Stream</span>
+                        <a href="pages/documentConverters/word-to-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-file-excel"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">EXCEL to PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Map heavy workbook layout grids and spreadsheets columns natively into clean structured PDF data tables.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Data Matrix</span>
+                        <a href="pages/documentConverters/excel-to-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-images"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">PDF to JPG</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Deconstruct complex multi-page Adobe PDF documents down into separate high-resolution raster asset frames.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Raster Extractor</span>
+                        <a href="pages/documentConverters/pdf-to-jpg.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-images"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Image Converter</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Cross-convert formats arrays recursively between PNG, JPG, WEBP, and BMP layers. (Excludes GIF blocks).</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Extensions Swap</span>
+                        <a href="pages/documentConverters/image-type-converter.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="category-block-node" id="category-section-pdf-manage" aria-labelledby="heading-pdf-manage">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-900/80 pb-3">
+                <h3 id="heading-pdf-manage" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-bars text-teal-400"></i> PDF Management
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-cubes text-[9px]"></i> Document Slicers
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-layer-group"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Merge PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Concatenate multiple structural PDF files sequences together into a single master package stream.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Concatenator</span>
+                        <a href="pages/pdfManagement/merge-pdfs.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-scissors"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Split PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Isolate user-defined core pages or break files into separate standalone document packages entries.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Page Slicer</span>
+                        <a href="pages/pdfManagement/split-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-file-export"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Extract Pages</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Isolate specific document chapters or individual sheets into a new, lightweight PDF file without altering the original.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Extraction Layer</span>
+                        <a href="pages/pdfManagement/extract-pages.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-trash-can-arrow-up"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Remove Pages</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Scrub unwanted tracking pages out of local files layouts natively without exposing data streams.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Page Purge</span>
+                        <a href="pages/pdfManagement/remove-pages.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-list-ol"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Organize PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Rearrange compilation bounds, sort structural parameters indices, or drag data rows blocks smoothly.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Page Manager</span>
+                        <a href="pages/pdfManagement/organize-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-rotate"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Rotate PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Fix layout orientations mismatches across individual canvas pages natively inside the browser context window.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Orientation</span>
+                        <a href="pages/pdfManagement/rotate-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="category-block-node" id="category-section-security" aria-labelledby="heading-pdf-security">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-900/80 pb-3">
+                <h3 id="heading-pdf-security" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-teal-400"></i> PDF Security
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-shield-halved text-[9px]"></i> Offline Shield
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-lock"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Protect PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Secure local vector documents securely with custom user passwords and strong permissions hashes flags mapping parameters.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">AES Encryption</span>
+                        <a href="pages/pdfSecurity/protect-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-lock-open"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">PDF Unlock</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Execute cryptographic routines locally to strip metadata restrictions and entry passwords blocks cleanly.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Decryption Core</span>
+                        <a href="pages/pdfSecurity/unlock-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="category-block-node" id="category-section-enhancements" aria-labelledby="heading-pdf-enhancements">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-900/80 pb-3">
+                <h3 id="heading-pdf-enhancements" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-teal-500"></i> PDF Enhancement
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-gem text-[9px]"></i> Optimization Deck
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-compress"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Compress PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Shrink trailing structural metadata bytes allocations and heavy object tables paths safely inside the browser memory gutter tracks.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Stream Cruncher</span>
+                        <a href="pages/pdfEnhancement/compress-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-crop-simple"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Crop PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Trim white margins or focus on specific content areas by defining custom viewport boundaries for your document layout models.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Geometry Engine</span>
+                        <a href="pages/pdfEnhancement/crop-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-hashtag"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Add Page Numbers</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Inject incremental digital page numbering rows layout layers across header or footer document parameters margins.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Pagination Core</span>
+                        <a href="pages/pdfEnhancement/add-page-number.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-stamp"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">PDF Watermark</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Stamp persistent asset labels text structures or overlay security logo canvas configurations onto pages vectors natively.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Vector Stamp</span>
+                        <a href="pages/pdfEnhancement/add-watermark.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="category-block-node hidden lg:block" id="category-section-review" aria-labelledby="heading-pdf-review">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-900/80 pb-3">
+                <h3 id="heading-pdf-review" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-teal-500"></i> PDF Review Viewports
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-expand text-[9px]"></i> Book Spread Core
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-columns"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Compare PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Mount two document data buffers side-by-side inside independent scrolling subframes to catch modifications variations tracks.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Diff Engine</span>
+                        <a href="pages/pdfReviewViewports/compare-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg mb-5 border border-teal-500/10 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300"><i class="fa-solid fa-eye"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">View PDF</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Advanced vector document streaming workbench. Equipped with a dynamic auto-hiding fullscreen **Two-Page Book Spread Presentation Mode**.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Immersive Read</span>
+                        <a href="pages/pdfReviewViewports/view-pdf.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i></a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-auto border-t border-slate-900 bg-slate-950/40 py-5 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Local sandbox optimization runtime directory index matrix modules.
+    </footer>
+
+    <script src="assets/js/index.js"></script>
+  
+</body>
+</html>

@@ -1,0 +1,77 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #060913; 
+}
+
+html, body {
+    height: 100%;
+}
+
+@media (min-width: 1024px) {
+    html, body {
+        overflow: hidden;
+    }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.metrics-card-glow {
+    box-shadow: 0 0 20px -5px rgba(20, 184, 166, 0.1), inset 0 0 12px rgba(15, 23, 42, 0.6);
+}
+
+/* Framing Rule of Thirds grid line overlay system */
+.framing-overlay-mask {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+}
+
+.framing-grid-third-v1 {
+    position: absolute;
+    left: 33.33%;
+    top: 0;
+    bottom: 0;
+    border-left: 1px dashed rgba(20, 184, 166, 0.35);
+}
+.framing-grid-third-v2 {
+    position: absolute;
+    left: 66.66%;
+    top: 0;
+    bottom: 0;
+    border-left: 1px dashed rgba(20, 184, 166, 0.35);
+}
+.framing-grid-third-h1 {
+    position: absolute;
+    top: 33.33%;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed rgba(20, 184, 166, 0.35);
+}
+.framing-grid-third-h2 {
+    position: absolute;
+    top: 66.66%;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed rgba(20, 184, 166, 0.35);
+}
+
+/* Hardware accelerated processing overlays definitions */
+#matrix-processing-overlay {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#matrix-processing-overlay .anim-target {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+select option {
+    background-color: #090d1f !important;
+    color: #2dd4bf !important;
+}

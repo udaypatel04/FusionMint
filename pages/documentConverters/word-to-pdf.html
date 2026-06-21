@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORD to PDF Pipeline // FusionMint Laboratory</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="../../assets/css/documentConverters/word-to-pdf.css">
+</head>
+<body class="no-scrollbar text-slate-200 min-h-screen flex flex-col pt-24 overflow-y-auto lg:overflow-hidden">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-blue-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <div class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/50">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-500 to-indigo-400 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-atom text-slate-950 text-xs animate-spin [animation-duration:16s]"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-blue-400">Mint</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+
+            <div class="flex justify-end items-center gap-3 w-1/3 shrink-0">
+                <button id="btn-fullscreen-presentation" disabled onclick="toggleFullscreenPresentation()" class="hidden px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-slate-950 rounded-xl transition-all shadow-md cursor-pointer flex items-center gap-1.5">
+                    <i class="fa-solid fa-expand text-[11px]"></i> <span class="hidden md:inline">Launch Presentation Mode</span><span class="inline md:hidden">Full</span>
+                </button>
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                    <span>Word Pipeline</span>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch overflow-visible lg:overflow-hidden h-auto lg:h-[calc(100vh-5rem)]">
+        
+        <div class="col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col gap-4 h-auto lg:h-full overflow-visible lg:overflow-hidden order-2 lg:order-1">
+            <div class="bg-slate-950/40 border border-slate-800/60 rounded-2xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-visible lg:overflow-y-auto no-scrollbar shadow-2xl">
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-blue-400"></i> Pipeline Config
+                    </h3>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Output Filename</span>
+                        <input type="text" id="pdf-output-filename" value="original_word_to_pdf" class="w-full bg-slate-900 border border-slate-800 text-sm font-medium text-slate-200 font-mono rounded-xl px-3 py-2.5 focus:outline-none focus:border-blue-500/40" placeholder="Output file name...">
+                    </div>
+
+                    <p class="text-[11px] text-slate-500 leading-relaxed mt-1">
+                        Word document components are securely deconstructed into raw XML streams, compiled client-side inside an isolated sandbox, and instantly downloaded as a formatted vector PDF.
+                    </p>
+                </div>
+
+                <div id="compilation-actions-deck" class="hidden flex-col gap-3 pt-4 border-t border-slate-900 shrink-0 mt-4 lg:mt-0">
+                    <button onclick="executeDirectWordToPdfCompilation()" class="w-full min-h-[44px] bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-slate-950 font-extrabold text-sm uppercase tracking-widest rounded-xl shadow-lg transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-file-pdf text-base"></i> Mint Export PDF
+                    </button>
+                    
+                    <button onclick="purgeActiveWordPipeline()" class="w-full py-2.5 bg-slate-900/60 hover:bg-red-950/20 border border-slate-800 hover:border-red-900/50 text-xs text-slate-400 hover:text-red-400 uppercase font-extrabold tracking-widest rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> Purge Staged File
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-4 xl:col-span-5 flex flex-col gap-4 items-center justify-center bg-slate-950/10 border border-slate-900/60 rounded-3xl p-4 sm:p-6 min-h-[420px] lg:min-h-0 relative overflow-hidden transition-all duration-300 order-1 lg:order-2">
+            <span class="absolute top-3 left-3 text-[9px] uppercase font-bold tracking-widest bg-slate-950/90 text-blue-400 border border-slate-900/40 px-2.5 py-1 rounded-md">Live Document Simulator Preview</span>
+
+            <div id="pdf-paper-sheet-simulator" class="relative bg-white text-slate-950 w-full max-w-[280px] sm:max-w-[320px] aspect-[210/297] rounded-md flex items-start justify-start p-4 sm:p-6 overflow-hidden mt-6 preview-sheet-shadow mx-auto">
+                <div id="simulator-empty-callout" class="w-full h-full text-center text-slate-400 flex flex-col items-center justify-center gap-1.5 select-none my-auto">
+                    <i class="fa-solid fa-wand-magic-sparkles text-xl text-blue-500/30 animate-pulse"></i>
+                    <p class="text-[10px] font-bold uppercase tracking-wider">No Document Staged</p>
+                    <span class="text-[9px] lowercase leading-relaxed text-slate-500/70 max-w-[190px] block">Upload a Word document to run local layout translation stream parses</span>
+                </div>
+                
+                <div id="simulator-raster-frame" class="w-full h-full relative hidden overflow-y-auto no-scrollbar">
+                    <div id="word-rendered-content" class="w-full h-auto text-left break-words"></div>
+                </div>
+            </div>
+
+            <div id="simulator-info-badge" class="hidden items-center gap-1.5 bg-blue-500/5 text-blue-400 border border-blue-500/10 px-3 py-2 rounded-xl text-[10px] text-center max-w-[300px] select-none leading-normal">
+                <i class="fa-solid fa-circle-info text-xs animate-pulse shrink-0"></i>
+                <span>Showing translated HTML preview layout. Conversion extracts text tracks directly to vector shapes on export.</span>
+            </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-4 xl:col-span-4 flex flex-col gap-4 h-auto lg:h-full overflow-visible lg:overflow-hidden order-3">
+            <div id="word-drop-zone" class="relative w-full min-h-[140px] bg-slate-950/40 border-2 border-dashed border-slate-800 hover:border-blue-500/40 rounded-3xl flex flex-col items-center justify-center p-4 text-center transition-all group cursor-pointer shrink-0">
+                <input type="file" id="word-pipeline-input" accept=".docx" onchange="loadWordDocumentToPipeline(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-2 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-file-word text-base"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200">Drag &amp; Drop Word Document (.docx) Here</h4>
+                <p class="text-[10px] text-slate-500 mt-1 max-w-[240px]">Select a document to run high-res structural compiler allocations instantly.</p>
+            </div>
+
+            <div class="bg-slate-950/30 border border-slate-800/60 rounded-3xl p-4 flex flex-col gap-3 flex-1 overflow-visible lg:overflow-hidden min-h-[200px] lg:min-h-0">
+                <div class="flex items-center justify-between border-b border-slate-900/80 pb-2 shrink-0">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Pipeline Performance Matrix</span>
+                </div>
+
+                <div class="w-full overflow-y-auto no-scrollbar pr-1 flex-1 flex flex-col items-center justify-start min-h-[120px] lg:min-h-0">
+                    <div id="empty-buffer-list-state" class="py-16 flex flex-col items-center justify-center text-slate-600 gap-1.5 select-none my-auto">
+                        <i class="fa-solid fa-chart-line text-xl mb-1 text-slate-700"></i>
+                        <span class="text-xs font-medium text-center">No system analytics available. Mount a target file.</span>
+                    </div>
+
+                    <div id="analytics-metrics-panel" class="hidden w-full flex flex-col gap-3.5 animate-fade-in pt-1">
+                        <div class="bg-slate-900/40 border border-slate-800 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-slate-500 font-bold">Staged Word Blueprint</span>
+                            <div class="flex flex-col gap-0.5">
+                                <h4 id="metrics-filename-lbl" class="text-xs font-bold text-slate-200 truncate max-w-full">document.docx</h4>
+                                <span id="metrics-size-lbl" class="text-[11px] font-mono font-bold text-blue-400 mt-0.5">Size: -- KB</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-900/40 border border-blue-950/40 border-2 p-3.5 rounded-2xl flex flex-col gap-1.5 metrics-card-glow">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-blue-400 font-bold">Compiler Snapshot Status</span>
+                            <div class="flex flex-col gap-0.5">
+                                <h4 class="text-xs font-bold text-emerald-400 font-mono">XML Extraction: Successful</h4>
+                                <span class="text-[11px] font-mono font-bold text-slate-500 mt-0.5">Vector Mapping: Operational</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="matrix-processing-overlay" class="invisible opacity-0 fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[999] flex flex-col items-center justify-center gap-4 select-none pointer-events-none transition-all duration-300 [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+        <div class="anim-target scale-90 flex flex-col items-center justify-center gap-4 transition-transform duration-300">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-t-blue-400 border-r-blue-500/10 border-b-blue-500/10 border-l-blue-500/10 animate-spin [animation-duration:1s]"></div>
+                <div class="absolute w-10 h-10 rounded-full border-4 border-b-indigo-400 border-t-indigo-500/10 border-r-indigo-500/10 border-l-indigo-500/10 animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
+                <i class="fa-solid fa-atom text-blue-400 text-lg animate-pulse"></i>
+            </div>
+            <div class="flex flex-col items-center gap-1 text-center">
+                <h4 id="overlay-main-title" class="text-sm font-extrabold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 font-mono">Minting Document Framework</h4>
+                <p id="overlay-status-label" class="text-[11px] text-slate-500 font-mono">Compiling localized vector paths...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side Cryptographic Vector Paths Compilation Blocks.
+    </footer>
+
+    <script src="../../assets/js/documentConverters/word-to-pdf.js"> </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #060913; 
+}
+
+html, body {
+    height: 100%;
+}
+
+/* Restored normal scroll bar behaviors for right side layout gutter */
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+img, canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+/* Glassmorphism theme utilities */
+.glass-theme {
+    background: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(16px) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Floating drag-and-drop layer objects */
+.floating-element {
+    position: absolute;
+    cursor: move;
+    user-select: none;
+    z-index: 50;
+    touch-action: none;
+    border: 1px transparent dashed;
+}
+.floating-element:hover {
+    border-color: rgba(20, 184, 166, 0.6);
+}
+.floating-element.element-active {
+    border-color: #14b8a6 !important;
+    box-shadow: 0 0 12px rgba(20, 184, 166, 0.2);
+}
+
+/* Drag-to-Delete collision zone container alert state styles */
+.trash-active {
+    background-color: rgba(239, 68, 68, 0.2) !important;
+    border-color: #ef4444 !important;
+    color: #f87171 !important;
+    transform: scale(1.02);
+}
+
+/* Dark Theme Option UI Elements Sync */
+select option {
+    background-color: #090d1f !important;
+    color: #2dd4bf !important;
+}

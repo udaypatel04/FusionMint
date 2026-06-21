@@ -1,0 +1,73 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #060913; 
+}
+
+html, body {
+    height: 100%;
+}
+
+@media (min-width: 1024px) {
+    html, body {
+        overflow: hidden;
+    }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.metrics-card-glow {
+    box-shadow: 0 0 20px -5px rgba(0, 230, 118, 0.1), inset 0 0 12px rgba(15, 23, 42, 0.6);
+}
+
+.preview-sheet-shadow {
+    box-shadow: 0 25px 50px -12px rgba(0, 230, 118, 0.15), 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+#pdf-paper-sheet-simulator {
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#excel-rendered-content {
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    color: #0f172a;
+    width: 100%;
+}
+.excel-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+}
+.excel-preview-table th, .excel-preview-table td {
+    border: 1px solid #cbd5e1;
+    padding: 4px 6px;
+    text-align: left;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.excel-preview-table th {
+    background-color: #f1f5f9;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+select option {
+    background-color: #090d1f !important;
+    color: #00e676 !important;
+}
+
+#matrix-processing-overlay {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#matrix-processing-overlay .anim-target {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

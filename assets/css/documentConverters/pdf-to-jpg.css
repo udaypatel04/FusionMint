@@ -1,0 +1,51 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #060913; 
+}
+
+html, body {
+    height: 100%;
+}
+
+@media (min-width: 1024px) {
+    html, body {
+        overflow: hidden;
+    }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.metrics-card-glow {
+    box-shadow: 0 0 20px -5px rgba(20, 184, 166, 0.1), inset 0 0 12px rgba(15, 23, 42, 0.6);
+}
+
+.page-raster-card {
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.page-raster-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(20, 184, 166, 0.4);
+    box-shadow: 0 12px 20px -8px rgba(20, 184, 166, 0.15);
+}
+
+.preview-sheet-shadow {
+    box-shadow: 0 25px 50px -12px rgba(20, 184, 166, 0.15), 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+#presentation-viewport-container {
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#matrix-processing-overlay {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#matrix-processing-overlay .anim-target {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
