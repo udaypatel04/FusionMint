@@ -1,0 +1,26 @@
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #060913;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.image-tile {
+    cursor: grab;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+.image-tile:active {
+    cursor: grabbing;
+    transform: scale(1.03);
+}
+.preview-sheet-shadow {
+    box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.18), 0 0 35px rgba(0, 0, 0, 0.85);
+}
+#pdf-paper-sheet-simulator {
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
