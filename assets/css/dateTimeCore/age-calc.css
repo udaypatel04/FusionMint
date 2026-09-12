@@ -1,0 +1,41 @@
+
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #060913; 
+}
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 8px;
+    border: 1px solid rgba(20, 184, 166, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #14b8a6;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #1e293b rgba(15, 23, 42, 0.6);
+}
+
+.matrix-card-glow {
+    box-shadow: 0 0 35px -5px rgba(20, 184, 166, 0.15), inset 0 0 15px rgba(15, 23, 42, 0.6);
+}
+.stat-glow {
+    box-shadow: 0 0 20px -3px rgba(20, 184, 166, 0.08);
+}

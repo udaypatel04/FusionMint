@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Time Zone Matrix // FusionMint Laboratory</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/dateTimeCore/timezon-matrix.css">
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col pt-20 lg:pt-24 overflow-y-auto select-none">
+
+    <!-- Atmospheric Background Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-cyan-500/10 via-teal-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <div class="fixed top-4 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/70 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/60">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-teal-400 flex items-center justify-center shadow-md shadow-cyan-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-globe text-slate-950 text-xs animate-pulse"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-cyan-400">Mint</span> <span class="text-[11px] text-slate-500 font-mono font-normal">// Time Zone Matrix</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3.5 py-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 rounded-lg border border-cyan-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end w-1/3 shrink-0">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span id="badge-utc-clock" class="font-mono text-cyan-300">Syncing UTC...</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch h-auto lg:h-[calc(100vh-5.5rem)]">
+        
+        <!-- Left Configuration & World Meeting Planner -->
+        <div id="sidebar-configuration-area" class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col gap-4 h-auto lg:h-full order-2 lg:order-1">
+            <div class="bg-slate-950/50 border border-slate-800/70 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-y-auto shadow-xl backdrop-blur-md">
+                
+                <div class="flex flex-col gap-4 pr-1">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-6 h-6 rounded bg-cyan-500 flex items-center justify-center">
+                                <i class="fa-solid fa-sliders text-slate-950 text-xs"></i>
+                            </div>
+                            <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200">Matrix Controls &amp; Planner</h3>
+                        </div>
+                        <span class="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">All Nations IANA</span>
+                    </div>
+
+                    <!-- 1. All Nations Search & Mount -->
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">1. Mount Country / City Clock</label>
+                            <span id="nations-total-counter" class="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-md">205 Countries Available</span>
+                        </div>
+                        
+                        <!-- Search input that filters dropdown -->
+                        <div class="relative w-full">
+                            <input type="text" id="inp-search-country" oninput="filterNationsDropdown()" placeholder="Type to filter country or city..." 
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 pl-8 font-mono text-xs text-cyan-300 placeholder-slate-600 focus:outline-none focus:border-cyan-500/50 transition-colors">
+                            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-500 pointer-events-none"></i>
+                        </div>
+
+                        <!-- Dropdown Selector & Plus Button -->
+                        <div class="flex items-center gap-2 w-full">
+                            <div class="relative flex-1 min-w-0">
+                                <select id="sel-add-timezone" 
+                                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 pr-8 font-mono text-xs text-cyan-300 focus:outline-none focus:border-cyan-500/50 truncate appearance-none cursor-pointer">
+                                    <!-- Populated dynamically -->
+                                </select>
+                                <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <button type="button" onclick="addSelectedCity()" 
+                                    class="w-10 h-[34px] rounded-xl bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 flex items-center justify-center font-bold text-xs hover:from-cyan-400 hover:to-teal-300 shadow-md shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer shrink-0" 
+                                    title="Mount clock to grid">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Base Country & Custom Date/Time Calculator Engine -->
+                    <div class="bg-slate-900/30 p-3.5 rounded-2xl border border-slate-800/60 flex flex-col gap-3">
+                        <div class="flex items-center justify-between border-b border-slate-900/80 pb-2">
+                            <span class="text-[10px] uppercase font-bold text-cyan-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-calculator text-cyan-400"></i> Custom Base Time Calculator
+                            </span>
+                            <button type="button" onclick="resetCustomTimeCalculatorToNow()" class="text-[9px] font-mono text-cyan-400 hover:text-cyan-300 cursor-pointer">
+                                <i class="fa-solid fa-rotate-left text-[8px]"></i> Live Sync
+                            </button>
+                        </div>
+
+                        <!-- Choose Base Origin Country for Differential Calculation -->
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] uppercase font-bold text-slate-400">Base Origin Zone (Calculate Relative To):</label>
+                            <select id="sel-base-timezone" onchange="handleBaseZoneChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 font-mono text-xs text-emerald-400 focus:outline-none focus:border-cyan-500/50">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+
+                        <!-- Custom Date and Time Inputs with Highlighted Icons -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <!-- Custom Date Input with Highlighted Calendar Icon -->
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[9px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                    <span>Custom Date:</span>
+                                    <i class="fa-solid fa-calendar-day text-[10px] text-cyan-400 animate-pulse"></i>
+                                </label>
+                                <div class="relative flex items-center">
+                                    <input type="date" id="inp-custom-date" oninput="handleCustomDateTimeChange()" 
+                                        class="w-full bg-slate-950 border border-slate-800 hover:border-cyan-500/50 focus:border-cyan-400 rounded-xl px-2.5 py-2 pr-9 font-mono text-xs text-cyan-300 focus:outline-none transition-all cursor-pointer [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+                                    <div class="absolute right-2.5 pointer-events-none w-5 h-5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 flex items-center justify-center text-[10px] shadow-sm shadow-cyan-500/20">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Custom Time Input with Highlighted Clock Icon -->
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[9px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                    <span>Custom Time:</span>
+                                    <i class="fa-solid fa-clock text-[10px] text-cyan-400 animate-pulse"></i>
+                                </label>
+                                <div class="relative flex items-center">
+                                    <input type="time" id="inp-custom-time" step="1" oninput="handleCustomDateTimeChange()" 
+                                        class="w-full bg-slate-950 border border-slate-800 hover:border-cyan-500/50 focus:border-cyan-400 rounded-xl px-2.5 py-2 pr-9 font-mono text-xs text-cyan-300 focus:outline-none text-left transition-all cursor-pointer [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+                                    <div class="absolute right-2.5 pointer-events-none w-5 h-5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 flex items-center justify-center text-[10px] shadow-sm shadow-cyan-500/20">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Delta Badge: Displays how much Custom Time is Ahead/Behind Live Time -->
+                        <div id="custom-live-delta-card" class="bg-slate-950/80 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5">
+                            <div class="flex items-center justify-between text-[10px] font-mono">
+                                <span class="text-slate-400 flex items-center gap-1">
+                                    <i class="fa-solid fa-timeline text-cyan-400"></i> Offset from Live Time:
+                                </span>
+                                <span id="delta-live-diff-badge" class="font-bold px-2 py-0.5 rounded-md bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                                    Synchronized (Live 0s)
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between text-[9px] font-mono text-slate-500 border-t border-slate-900 pt-1">
+                                <span id="delta-live-clock-ref">Live: 00:00:00</span>
+                                <span id="delta-custom-clock-ref">Custom: 00:00:00</span>
+                            </div>
+                        </div>
+
+                        <div id="calculator-status-strip" class="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20 flex items-center justify-between">
+                            <span>Status: Real-Time Live Clock</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Time Notation (12h vs 24h) -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">3. Time Notation</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="setTimeNotation(12)" id="btn-fmt-12" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-cyan-500 text-slate-950 shadow-md transition-all cursor-pointer">12-Hour (AM/PM)</button>
+                            <button type="button" onclick="setTimeNotation(24)" id="btn-fmt-24" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer">24-Hour (Military)</button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Quick Action Regional Presets -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Fast Regional Presets</span>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button type="button" onclick="loadRegionalPreset('tech')" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 transition-all cursor-pointer">Tech Hubs</button>
+                            <button type="button" onclick="loadRegionalPreset('finance')" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 transition-all cursor-pointer">Finance Hubs</button>
+                            <button type="button" onclick="loadRegionalPreset('asia')" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/40 text-slate-300 transition-all cursor-pointer">Asia-Pacific</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Zero-latency Client-side sync</span>
+                    <span class="text-cyan-400 font-bold">Active IANA Grid</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Output: Interactive World Clock Grid -->
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-7 xl:col-span-8 flex flex-col gap-4 h-full relative pb-6 lg:pb-0 order-1 lg:order-2">
+            
+            <div class="bg-slate-950/40 border border-slate-800/70 rounded-3xl p-4 sm:p-6 flex flex-col gap-4 flex-1 justify-between relative shadow-2xl backdrop-blur-md overflow-y-auto">
+                
+                <!-- Viewport Header -->
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-900/90 pb-3 gap-2 shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-slate-300">Synchronized Global Grid</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="grid-count-badge" class="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20">6 Active Zones</span>
+                        <button type="button" onclick="clearNonDefaultClocks()" class="text-[10px] font-mono text-slate-500 hover:text-red-400 transition-colors cursor-pointer">Reset</button>
+                    </div>
+                </div>
+
+                <!-- Primary Master Base Clock & UTC Anchor Bar -->
+                <div class="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-3 sm:p-4 matrix-card-glow flex flex-wrap items-center justify-between gap-3 shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center font-mono font-bold text-xs text-center">
+                            BASE
+                        </div>
+                        <div class="flex flex-col">
+                            <span id="master-base-name" class="text-xs font-mono font-bold text-cyan-300">Base: India (Asia/Kolkata)</span>
+                            <span id="master-utc-full-date" class="text-[10px] text-slate-500 font-mono">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span id="master-base-time-str" class="text-xl sm:text-2xl font-extrabold font-mono text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">00:00:00</span>
+                        <span id="master-utc-pill" class="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-1 rounded-lg border border-slate-800">UTC 00:00:00</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic City Clock Cards Grid -->
+                <div id="city-clocks-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 flex-1 items-start content-start">
+                    <!-- Clocks render dynamically here with relative ahead/behind time badges -->
+                </div>
+
+                <!-- Footer Telemetry & Metrics -->
+                <div class="pt-3 border-t border-slate-900 flex flex-wrap items-center justify-between text-[10px] font-mono text-slate-500 gap-2 shrink-0">
+                    <div class="flex items-center gap-3">
+                        <span>Base Reference Zone: <span id="telemetry-base-zone" class="text-cyan-300">Asia/Kolkata</span></span>
+                        <span>Solar Day: <span class="text-emerald-400" id="telemetry-day-fraction">50.0%</span></span>
+                    </div>
+                    <button type="button" onclick="copyAllTimeZonesSnapshot()" class="hover:text-cyan-400 underline decoration-slate-700 cursor-pointer">Copy Time Table</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side Temporal Computation Architecture.
+    </footer>
+
+    <!-- Script Logic with Global Nations Database -->
+    <script src="../../assets/js/dateTimeCore/timezon-matrix.js"></script>
+</body>
+</html>

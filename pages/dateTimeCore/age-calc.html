@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Matrix & World Chrono Studio // FusionMint Laboratory</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/dateTimeCore/age-calc.css">
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col pt-20 lg:pt-24 overflow-y-auto select-none">
+
+    <!-- Atmospheric Background Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <div class="fixed top-4 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/70 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/60">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-clock text-slate-950 text-xs animate-pulse"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-teal-400">Mint</span> <span class="text-[11px] text-slate-500 font-mono font-normal">// Chrono Engine</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3.5 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end w-1/3 shrink-0">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                    <span id="badge-time-display" class="font-mono text-teal-300">Syncing...</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch h-auto lg:h-[calc(100vh-5.5rem)]">
+        
+        <!-- Left Configuration Area -->
+        <div id="sidebar-configuration-area" class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col gap-4 h-auto lg:h-full order-2 lg:order-1">
+            <div class="bg-slate-950/50 border border-slate-800/70 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-y-auto shadow-xl backdrop-blur-md">
+                
+                <div class="flex flex-col gap-4 pr-1">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-6 h-6 rounded bg-teal-500 flex items-center justify-center">
+                                <i class="fa-solid fa-calendar-days text-slate-950 text-xs"></i>
+                            </div>
+                            <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200">Temporal Parameters</h3>
+                        </div>
+                        <span class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-md border border-teal-500/20">UTC + Live</span>
+                    </div>
+
+                    <!-- Date of Birth Selection -->
+                    <!-- 1. Date of Birth & Time Selection with Highlighted Icons -->
+<div class="flex flex-col gap-2">
+    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+        <span class="flex items-center gap-1.5">
+            <span>1. Date of Birth &amp; Time</span>
+            <i class="fa-solid fa-sparkles text-[9px] text-teal-400 animate-pulse"></i>
+        </span>
+        <span class="text-teal-400 font-mono text-[9px] bg-teal-500/10 border border-teal-500/20 px-1.5 py-0.5 rounded">ISO 8601</span>
+    </label>
+    <div class="grid grid-cols-3 gap-2">
+        <!-- Date of Birth Input -->
+        <div class="relative col-span-2 flex items-center">
+            <input type="date" id="inp-dob" onchange="computeTemporalMetrics()" 
+                   class="w-full bg-slate-950 border border-slate-800 hover:border-teal-500/50 focus:border-teal-400 rounded-xl px-3 py-2.5 pr-10 font-mono text-xs text-teal-300 focus:outline-none transition-all cursor-pointer [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+            <div class="absolute right-2.5 pointer-events-none w-6 h-6 rounded-lg bg-teal-500/15 border border-teal-500/30 text-teal-300 flex items-center justify-center text-xs shadow-sm shadow-teal-500/20">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+        </div>
+
+        <!-- Birth Time Input -->
+        <div class="relative col-span-1 flex items-center">
+            <input type="time" id="inp-dob-time" value="00:00" onchange="computeTemporalMetrics()" 
+                   class="w-full bg-slate-950 border border-slate-800 hover:border-teal-500/50 focus:border-teal-400 rounded-xl px-2.5 py-2.5 pr-8 font-mono text-xs text-teal-300 focus:outline-none transition-all cursor-pointer text-left [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+            <div class="absolute right-2 pointer-events-none w-5 h-5 rounded-md bg-teal-500/15 border border-teal-500/30 text-teal-300 flex items-center justify-center text-[10px] shadow-sm shadow-teal-500/20">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Target / Comparative Date Selection with Highlighted Calendar Icon -->
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center justify-between">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                        <span>2. Target Evaluation Date</span>
+                    </label>
+                    <button type="button" onclick="setTargetDateToToday()" class="text-[10px] font-mono text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1 cursor-pointer bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-md">
+                        <i class="fa-solid fa-rotate-left text-[9px]"></i> Reset Today
+                    </button>
+                </div>
+                <div class="relative flex items-center">
+                    <input type="date" id="inp-target-date" onchange="computeTemporalMetrics()" 
+                        class="w-full bg-slate-950 border border-slate-800 hover:border-teal-500/50 focus:border-teal-400 rounded-xl px-3 py-2.5 pr-10 font-mono text-xs text-teal-300 focus:outline-none transition-all cursor-pointer [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+                    <div class="absolute right-2.5 pointer-events-none w-6 h-6 rounded-lg bg-teal-500/15 border border-teal-500/30 text-teal-300 flex items-center justify-center text-xs shadow-sm shadow-teal-500/20">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+                    <!-- Time Format Settings (12h vs 24h & Milliseconds toggle) -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">3. Master Clock Display Format</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="setTimeFormat(12)" id="btn-fmt-12" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-teal-500 text-slate-950 shadow-md transition-all cursor-pointer">12-Hour (AM/PM)</button>
+                            <button type="button" onclick="setTimeFormat(24)" id="btn-fmt-24" class="py-2 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer">24-Hour (Military)</button>
+                        </div>
+                    </div>
+
+                    <!-- Primary Reference Time Zone Configurator -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+                            <span>4. Primary Reference Time Zone</span>
+                            <span id="tz-offset-pill" class="text-emerald-400 font-mono text-[9px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">Local</span>
+                        </label>
+                        <select id="sel-timezone" onchange="handleTimezoneChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">
+                            <option value="AUTO" selected>Auto Detect (Browser Local)</option>
+                            <option value="UTC">UTC / GMT (Coordinated Universal Time)</option>
+                            <option value="Asia/Kolkata">Asia/Kolkata (IST - UTC+05:30)</option>
+                            <option value="America/New_York">America/New_York (EST/EDT - UTC-05:00)</option>
+                            <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT - UTC-08:00)</option>
+                            <option value="Europe/London">Europe/London (GMT/BST - UTC+00:00)</option>
+                            <option value="Europe/Paris">Europe/Paris (CET/CEST - UTC+01:00)</option>
+                            <option value="Asia/Dubai">Asia/Dubai (GST - UTC+04:00)</option>
+                            <option value="Asia/Tokyo">Asia/Tokyo (JST - UTC+09:00)</option>
+                            <option value="Asia/Singapore">Asia/Singapore (SGT - UTC+08:00)</option>
+                            <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT - UTC+10:00)</option>
+                        </select>
+                    </div>
+
+                    <!-- Planetary Age Comparator Feature -->
+                    <div class="flex flex-col gap-2 pt-1">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+                            <span>5. Planetary Solar Revolution</span>
+                            <span class="text-teal-400 font-mono text-[9px]">Orbital Math</span>
+                        </label>
+                        <select id="sel-planet" onchange="computePlanetaryAge()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-amber-300 focus:outline-none focus:border-teal-500/50">
+                            <option value="mercury">Mercury (0.24 Earth Yrs)</option>
+                            <option value="venus">Venus (0.62 Earth Yrs)</option>
+                            <option value="mars" selected>Mars (1.88 Earth Yrs)</option>
+                            <option value="jupiter">Jupiter (11.86 Earth Yrs)</option>
+                            <option value="saturn">Saturn (29.46 Earth Yrs)</option>
+                            <option value="uranus">Uranus (84.01 Earth Yrs)</option>
+                            <option value="neptune">Neptune (164.8 Earth Yrs)</option>
+                        </select>
+                    </div>
+
+                    <!-- Live Precision Stream -->
+                    <div class="flex items-center justify-between bg-slate-900/30 p-3 rounded-2xl border border-slate-800/40">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold text-slate-300">Live Precision Millisecond Clock</span>
+                            <span class="text-[9px] text-slate-500 font-mono">High-frequency sub-second rendering</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="chk-live-stream" checked onchange="toggleLiveStreaming()" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-900 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-teal-500"></div>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Leap Year, IANA &amp; Lunar Almanac</span>
+                    <span class="text-teal-400">Precision Chrono Core</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Output Dashboard Area -->
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-7 xl:col-span-8 flex flex-col gap-4 h-full relative pb-6 lg:pb-0 order-1 lg:order-2">
+            
+            <div class="bg-slate-950/40 border border-slate-800/70 rounded-3xl p-4 sm:p-6 flex flex-col gap-5 flex-1 justify-between relative shadow-2xl backdrop-blur-md overflow-y-auto">
+                
+                <!-- Dashboard Header -->
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-900/90 pb-3 gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-slate-300">Temporal Quantum Output</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <span id="vikram-samvat-badge" class="text-[10px] font-mono font-bold text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-500/20 flex items-center gap-1">
+                            <i class="fa-solid fa-om text-[9px]"></i> <span id="lbl-vs-year">VS 2083</span>
+                        </span>
+                        <span id="astronomy-sign-badge" class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-lg border border-teal-500/20">Zodiac: Calculated</span>
+                    </div>
+                </div>
+
+                <!-- Primary Age Display Card -->
+                <div class="bg-slate-950/80 border border-slate-800/80 rounded-3xl p-5 sm:p-7 matrix-card-glow flex flex-col items-center justify-center gap-4 text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-mono">Current Biological Epoch</span>
+                    
+                    <div class="grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-lg">
+                        <div class="flex flex-col items-center bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60 stat-glow">
+                            <span id="metric-years" class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 font-mono">00</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Years</span>
+                        </div>
+                        <div class="flex flex-col items-center bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60 stat-glow">
+                            <span id="metric-months" class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 font-mono">00</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Months</span>
+                        </div>
+                        <div class="flex flex-col items-center bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60 stat-glow">
+                            <span id="metric-days" class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 font-mono">00</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Days</span>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-mono text-slate-400 flex items-center gap-2 mt-1">
+                        <i class="fa-solid fa-stopwatch text-teal-400 text-xs"></i>
+                        <span id="metric-realtime-seconds">00h : 00m : 00s . 000ms</span>
+                    </div>
+                </div>
+
+                <!-- Modern Live Clock & Atomic Telemetry Strip -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-800/80 flex flex-col items-center justify-center">
+                        <span class="text-[9px] font-mono uppercase font-bold text-slate-500">Atomic UTC Epoch</span>
+                        <span id="live-atomic-utc" class="text-sm font-mono font-bold text-teal-300 mt-0.5">00:00:00 UTC</span>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-800/80 flex flex-col items-center justify-center">
+                        <span class="text-[9px] font-mono uppercase font-bold text-slate-500">Unix Timestamp</span>
+                        <span id="live-unix-timestamp" class="text-sm font-mono font-bold text-emerald-400 mt-0.5">1773300000</span>
+                    </div>
+                    <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-800/80 flex flex-col items-center justify-center">
+                        <span class="text-[9px] font-mono uppercase font-bold text-slate-500">Day Progress</span>
+                        <div class="w-full flex items-center gap-2 mt-1 px-2">
+                            <div class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                                <div id="live-day-progress-bar" class="bg-gradient-to-r from-teal-500 to-emerald-400 h-1.5 rounded-full" style="width: 50%;"></div>
+                            </div>
+                            <span id="live-day-progress-val" class="text-[10px] font-mono text-teal-300 font-bold">50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vikram Samvat Hindu Calendar Almanac Matrix -->
+                <div class="bg-slate-900/40 border border-orange-500/20 rounded-2xl p-4 flex flex-col gap-2 relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xs">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-orange-300">Vikram Samvat (વિક્રમ સંવત) Almanac</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-orange-400/80 bg-orange-500/5 px-2 py-0.5 rounded border border-orange-500/10">Lunisolar Engine</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-1">
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Birth Era (સંવત)</span>
+                            <span id="vs-dob-year" class="text-xs font-mono font-bold text-orange-400 mt-0.5">VS 2056</span>
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Target Era (સંવત)</span>
+                            <span id="vs-target-year" class="text-xs font-mono font-bold text-orange-400 mt-0.5">VS 2083</span>
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Birth Month (માસ)</span>
+                            <span id="vs-birth-masa" class="text-xs font-mono font-bold text-amber-300 mt-0.5">Pausha / Pousha</span>
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Solar Season (ઋતુ)</span>
+                            <span id="vs-birth-ritu" class="text-xs font-mono font-bold text-amber-300 mt-0.5">Hemanta (Winter)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- World Time Zone Synchronized Grid (Multi-city) -->
+                <div class="flex flex-col gap-2">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Global Synchronized Matrix Grid</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <div class="bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                <span>London (GMT)</span>
+                                <i class="fa-solid fa-clock text-[8px] text-teal-400"></i>
+                            </span>
+                            <span id="tz-time-london" class="text-xs font-mono font-bold text-teal-300 mt-1">--:--:--</span>
+                        </div>
+                        <div class="bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                <span>New York (EST)</span>
+                                <i class="fa-solid fa-clock text-[8px] text-teal-400"></i>
+                            </span>
+                            <span id="tz-time-ny" class="text-xs font-mono font-bold text-teal-300 mt-1">--:--:--</span>
+                        </div>
+                        <div class="bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60 flex items-center justify-between">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                <span>Dubai (GST)</span>
+                                <i class="fa-solid fa-clock text-[8px] text-teal-400"></i>
+                            </span>
+                            <span id="tz-time-dubai" class="text-xs font-mono font-bold text-teal-300 mt-1">--:--:--</span>
+                        </div>
+                        <div class="bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60 flex items-center justify-between">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                <span>Tokyo (JST)</span>
+                                <i class="fa-solid fa-clock text-[8px] text-teal-400"></i>
+                            </span>
+                            <span id="tz-time-tokyo" class="text-xs font-mono font-bold text-teal-300 mt-1">--:--:--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cumulative Units Breakdown -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Months</span>
+                        <span id="unit-total-months" class="text-sm sm:text-base font-bold font-mono text-teal-300 mt-1">0</span>
+                    </div>
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Weeks</span>
+                        <span id="unit-total-weeks" class="text-sm sm:text-base font-bold font-mono text-teal-300 mt-1">0</span>
+                    </div>
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Heartbeats (~80 BPM)</span>
+                        <span id="unit-total-heartbeats" class="text-sm sm:text-base font-bold font-mono text-rose-400 mt-1">0</span>
+                    </div>
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Breaths</span>
+                        <span id="unit-total-breaths" class="text-sm sm:text-base font-bold font-mono text-cyan-300 mt-1">0</span>
+                    </div>
+                </div>
+
+                <!-- Planetary Age & Next Milestone Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60 flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Next Birthday</span>
+                            <span id="info-next-bday" class="text-xs font-mono text-emerald-400 font-bold mt-0.5">0 Mos, 0 Days</span>
+                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-cake-candles text-sm"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60 flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Planetary Solar Age</span>
+                            <span id="info-planetary-age" class="text-xs font-mono text-amber-300 font-bold mt-0.5">0.00 Mars Yrs</span>
+                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-globe text-sm"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60 flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Day of Birth</span>
+                            <span id="info-birth-dayname" class="text-xs font-mono text-teal-300 font-bold mt-0.5">Calculating...</span>
+                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-sun text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Summary Strip -->
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                    <span>100% Client-Side Computation Engine</span>
+                    <button type="button" onclick="copyTemporalReport()" class="hover:text-teal-400 underline decoration-slate-700 cursor-pointer">Copy Temporal Report</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side Temporal Computation Architecture.
+    </footer>
+
+    <!-- Chrono Engine Script Logic -->
+    <script src="../../assets/js/dateTimeCore/age-calc.js"></script>
+</body>
+</html>

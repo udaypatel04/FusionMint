@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Difference & Workday Matrix // FusionMint Laboratory</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../assets/css/dateTimeCore/date-difference.css">
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col pt-20 lg:pt-24 overflow-y-auto select-none">
+
+    <!-- Atmospheric Background Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-emerald-500/10 via-teal-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <div class="fixed top-4 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/70 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/60">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-md shadow-emerald-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-calendar-week text-slate-950 text-xs animate-pulse"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-emerald-400">Mint</span> <span class="text-[11px] text-slate-500 font-mono font-normal">// Workday Matrix</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3.5 py-1.5 text-xs font-semibold text-emerald-400 bg-emerald-500/10 rounded-lg border border-emerald-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end w-1/3 shrink-0">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="font-mono text-emerald-300">Duration Engine Active</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch h-auto lg:h-[calc(100vh-5.5rem)]">
+        
+        <!-- Left Configuration Sidebar -->
+        <div id="sidebar-configuration-area" class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col gap-4 h-auto lg:h-full order-2 lg:order-1">
+            <div class="bg-slate-950/50 border border-slate-800/70 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-y-auto shadow-xl backdrop-blur-md">
+                
+                <div class="flex flex-col gap-4 pr-1">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-6 h-6 rounded bg-emerald-500 flex items-center justify-center">
+                                <i class="fa-solid fa-sliders text-slate-950 text-xs"></i>
+                            </div>
+                            <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200">Timeline Coordinates</h3>
+                        </div>
+                        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Vector Delta</span>
+                    </div>
+
+                    <!-- 1. Start Date -->
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                                <span>1. Start Date</span>
+                            </label>
+                            <button type="button" onclick="setStartDateToday()" class="text-[9px] font-mono text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 cursor-pointer bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                                <i class="fa-solid fa-rotate-left text-[8px]"></i> Today
+                            </button>
+                        </div>
+                        <div class="relative flex items-center">
+                            <input type="date" id="inp-start-date" onchange="calculateDateDifferential()" 
+                                   class="w-full bg-slate-950 border border-slate-800 hover:border-emerald-500/50 focus:border-emerald-400 rounded-xl px-3 py-2 pr-9 font-mono text-xs text-emerald-300 focus:outline-none transition-all cursor-pointer [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+                            <div class="absolute right-2.5 pointer-events-none w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 flex items-center justify-center text-[10px]">
+                                <i class="fa-solid fa-calendar-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. End Date -->
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                                <span>2. End Date</span>
+                            </label>
+                            <span id="start-end-swap-btn" onclick="swapStartEndDates()" class="text-[9px] font-mono text-slate-400 hover:text-emerald-300 transition-colors flex items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-[8px]"></i> Swap
+                            </span>
+                        </div>
+                        <div class="relative flex items-center">
+                            <input type="date" id="inp-end-date" onchange="calculateDateDifferential()" 
+                                   class="w-full bg-slate-950 border border-slate-800 hover:border-emerald-500/50 focus:border-emerald-400 rounded-xl px-3 py-2 pr-9 font-mono text-xs text-emerald-300 focus:outline-none transition-all cursor-pointer [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer">
+                            <div class="absolute right-2.5 pointer-events-none w-5 h-5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 flex items-center justify-center text-[10px]">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Workday Schedule & Weekend Definition -->
+                    <div class="bg-slate-900/30 p-3.5 rounded-2xl border border-slate-800/60 flex flex-col gap-2.5">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                            <span>3. Weekend Definition</span>
+                            <span class="text-emerald-400 font-mono text-[9px]">Custom Days</span>
+                        </span>
+                        
+                        <div class="grid grid-cols-7 gap-1" id="weekend-days-picker">
+                            <button type="button" onclick="toggleWeekendDay(0)" id="day-btn-0" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-emerald-500 text-slate-950 shadow-sm transition-all cursor-pointer">Sun</button>
+                            <button type="button" onclick="toggleWeekendDay(1)" id="day-btn-1" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-400 transition-all cursor-pointer">Mon</button>
+                            <button type="button" onclick="toggleWeekendDay(2)" id="day-btn-2" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-400 transition-all cursor-pointer">Tue</button>
+                            <button type="button" onclick="toggleWeekendDay(3)" id="day-btn-3" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-400 transition-all cursor-pointer">Wed</button>
+                            <button type="button" onclick="toggleWeekendDay(4)" id="day-btn-4" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-400 transition-all cursor-pointer">Thu</button>
+                            <button type="button" onclick="toggleWeekendDay(5)" id="day-btn-5" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-slate-900 border border-slate-800 text-slate-400 transition-all cursor-pointer">Fri</button>
+                            <button type="button" onclick="toggleWeekendDay(6)" id="day-btn-6" class="py-1.5 text-[9px] font-mono font-bold rounded-lg bg-emerald-500 text-slate-950 shadow-sm transition-all cursor-pointer">Sat</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-1">
+                            <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
+                                <input type="checkbox" id="chk-include-end-date" checked onchange="calculateDateDifferential()" class="w-4 h-4 rounded border-slate-800 bg-slate-950 text-emerald-500 accent-emerald-500">
+                                <span>Include End Date in Total</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. Public Holidays Subtractor -->
+                    <div class="bg-slate-900/30 p-3.5 rounded-2xl border border-slate-800/60 flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">4. Excluded Holidays / Off Days:</span>
+                            <span id="holidays-count-badge" class="text-[9px] font-mono text-emerald-400">0 days</span>
+                        </div>
+                        <input type="number" id="inp-custom-holidays" min="0" value="0" oninput="calculateDateDifferential()" placeholder="Count of excluded public holidays" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 font-mono text-xs text-emerald-300 focus:outline-none focus:border-emerald-500/50">
+                    </div>
+
+                    <!-- 5. Quick Span Presets -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Quick Span Adders</span>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button type="button" onclick="addDurationToStart(7)" class="py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 text-slate-300 transition-all cursor-pointer">+7 Days</button>
+                            <button type="button" onclick="addDurationToStart(30)" class="py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 text-slate-300 transition-all cursor-pointer">+30 Days</button>
+                            <button type="button" onclick="addDurationToStart(90)" class="py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 text-slate-300 transition-all cursor-pointer">+1 Quarter</button>
+                            <button type="button" onclick="addDurationToStart(365)" class="py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-emerald-500/40 text-slate-300 transition-all cursor-pointer">+1 Year</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Leap-Year Aware Arithmetic</span>
+                    <span class="text-emerald-400 font-bold">Vector Matrix</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Output Dashboard Area -->
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-7 xl:col-span-8 flex flex-col gap-4 h-full relative pb-6 lg:pb-0 order-1 lg:order-2">
+            
+            <div class="bg-slate-950/40 border border-slate-800/70 rounded-3xl p-4 sm:p-6 flex flex-col gap-5 flex-1 justify-between relative shadow-2xl backdrop-blur-md overflow-y-auto">
+                
+                <!-- Dashboard Header -->
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-900/90 pb-3 gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-slate-300">Differential Temporal Breakdown</span>
+                    </div>
+                    <span id="timeline-span-pill" class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">Span: Calculated</span>
+                </div>
+
+                <!-- Primary Grand Total Display Card -->
+                <div class="bg-slate-950/80 border border-slate-800/80 rounded-3xl p-5 sm:p-7 matrix-card-glow flex flex-col items-center justify-center gap-4 text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-mono">Gross Timeline Duration</span>
+                    
+                    <div class="grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-lg">
+                        <div class="flex flex-col items-center bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60 stat-glow">
+                            <span id="metric-diff-years" class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 font-mono">0</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Years</span>
+                        </div>
+                        <div class="flex flex-col items-center bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60 stat-glow">
+                            <span id="metric-diff-months" class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 font-mono">0</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Months</span>
+                        </div>
+                        <div class="flex flex-col items-center bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60 stat-glow">
+                            <span id="metric-diff-days" class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 font-mono">0</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Days</span>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-mono text-slate-400 flex items-center gap-2 mt-1">
+                        <i class="fa-solid fa-calendar text-emerald-400 text-xs"></i>
+                        <span id="metric-total-days-summary">Total Duration: 0 Days</span>
+                    </div>
+                </div>
+
+                <!-- Business vs Weekend Days Breakdown -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-emerald-500/30 flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Net Business Days</span>
+                            <div class="w-6 h-6 rounded bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                        </div>
+                        <span id="stat-working-days" class="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-400 mt-2">0</span>
+                        <span id="stat-working-percent" class="text-[9px] font-mono text-slate-500 mt-0.5">0.0% of total timeframe</span>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800/80 flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Weekend Days</span>
+                            <div class="w-6 h-6 rounded bg-teal-500/10 text-teal-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-mug-hot"></i>
+                            </div>
+                        </div>
+                        <span id="stat-weekend-days" class="text-2xl sm:text-3xl font-extrabold font-mono text-teal-300 mt-2">0</span>
+                        <span id="stat-weekend-percent" class="text-[9px] font-mono text-slate-500 mt-0.5">0.0% of total timeframe</span>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800/80 flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Holidays Deducted</span>
+                            <div class="w-6 h-6 rounded bg-rose-500/10 text-rose-400 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-calendar-xmark"></i>
+                            </div>
+                        </div>
+                        <span id="stat-holiday-deductions" class="text-2xl sm:text-3xl font-extrabold font-mono text-rose-400 mt-2">0</span>
+                        <span class="text-[9px] font-mono text-slate-500 mt-0.5">Subtracted from workdays</span>
+                    </div>
+                </div>
+
+                <!-- Cumulative Units Matrix -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Weeks</span>
+                        <span id="unit-total-weeks" class="text-sm sm:text-base font-bold font-mono text-emerald-300 mt-1">0</span>
+                    </div>
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Hours</span>
+                        <span id="unit-total-hours" class="text-sm sm:text-base font-bold font-mono text-emerald-300 mt-1">0</span>
+                    </div>
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Minutes</span>
+                        <span id="unit-total-minutes" class="text-sm sm:text-base font-bold font-mono text-emerald-300 mt-1">0</span>
+                    </div>
+                    <div class="bg-slate-900/30 p-3 rounded-2xl border border-slate-800/60 flex flex-col">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Total Seconds</span>
+                        <span id="unit-total-seconds" class="text-sm sm:text-base font-bold font-mono text-emerald-300 mt-1">0</span>
+                    </div>
+                </div>
+
+                <!-- Footer Summary Strip -->
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                    <span>100% Client-Side Computation Engine</span>
+                    <button type="button" onclick="copyDurationReport()" class="hover:text-emerald-400 underline decoration-slate-700 cursor-pointer">Copy Duration Report</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side Temporal Computation Architecture.
+    </footer>
+
+    <!-- Differential Computation Script Logic -->
+    <script src="../../assets/js/dateTimeCore/date-difference.js"></script>
+</body>
+</html>
