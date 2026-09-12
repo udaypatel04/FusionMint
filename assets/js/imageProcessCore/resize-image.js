@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideProcessingOverlay();
 });
 
+
 function showProcessingOverlay(title = "Baking Operation Pipeline", subtitle = "Compiling localized data payload structures...") {
     const overlay = document.getElementById('matrix-processing-overlay');
     document.getElementById('overlay-main-title').innerText = title;

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Matrix // FusionMint Laboratory</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- QR Code Styling Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../assets/css/imageProcessCore/qr-code-generator.css">
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col pt-20 lg:pt-24 overflow-y-auto select-none">
+
+    <!-- Atmospheric Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <div class="fixed top-4 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/70 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/60">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-qrcode text-slate-950 text-xs animate-pulse"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-teal-400">Mint</span> <span class="text-[11px] text-slate-500 font-mono font-normal">// QR Matrix</span></span>
+            </div>
+            
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">Home</a>
+                    <a href="../../index.html#library" class="px-3.5 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all">Tools</a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors">About</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end w-1/3 shrink-0">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                    <span class="hidden sm:inline">Engine Ready (ECC-H)</span>
+                    <span class="inline sm:hidden">Ready</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch h-auto lg:h-[calc(100vh-5.5rem)]">
+        
+        <!-- Left Configuration Area -->
+        <div id="sidebar-configuration-area" class="col-span-12 lg:col-span-6 xl:col-span-6 flex flex-col gap-4 h-auto lg:h-full order-2 lg:order-1">
+            <div class="bg-slate-950/50 border border-slate-800/70 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-y-auto shadow-xl backdrop-blur-md">
+                
+                <div class="flex flex-col gap-4 pr-1">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-6 h-6 rounded bg-teal-500 flex items-center justify-center">
+                                <i class="fa-solid fa-sliders text-slate-950 text-xs"></i>
+                            </div>
+                            <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200">Matrix Synthesizer Engine</h3>
+                        </div>
+                        <span class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-md border border-teal-500/20">Vector 2D</span>
+                    </div>
+
+                    <!-- Preset Engine Mode Selector -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Preset Engine Mode</span>
+                        <div class="grid grid-cols-2 gap-2 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-800/80">
+                            <button onclick="applyNormalQrPreset()" id="preset-btn-normal" class="py-2.5 px-3 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2 cursor-pointer border border-transparent">
+                                <i class="fa-solid fa-square-full text-xs text-slate-400"></i> Standard Classic QR
+                            </button>
+                            <button onclick="applyStylizedQrPreset()" id="preset-btn-stylized" class="py-2.5 px-3 text-xs font-bold rounded-xl bg-teal-500 text-slate-950 shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border border-teal-400">
+                                <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Stylized Matrix
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 1. Data Payload Architecture Selector -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">1. Data Payload Architecture</span>
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1.5 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-800/80">
+                            <button onclick="setPayloadMode('url')" id="type-btn-url" class="py-2 text-[10px] font-bold uppercase rounded-xl bg-teal-500 text-slate-950 shadow-md transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-link text-xs"></i> URL
+                            </button>
+                            <button onclick="setPayloadMode('text')" id="type-btn-text" class="py-2 text-[10px] font-bold uppercase rounded-xl text-slate-400 hover:text-white transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-font text-xs"></i> Text
+                            </button>
+                            <button onclick="setPayloadMode('password')" id="type-btn-password" class="py-2 text-[10px] font-bold uppercase rounded-xl text-slate-400 hover:text-white transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-key text-xs text-amber-400"></i> Password
+                            </button>
+                            <button onclick="setPayloadMode('upi')" id="type-btn-upi" class="py-2 text-[10px] font-bold uppercase rounded-xl text-slate-400 hover:text-white transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-indian-rupee-sign text-xs"></i> UPI Pay
+                            </button>
+                            <button onclick="setPayloadMode('wifi')" id="type-btn-wifi" class="py-2 text-[10px] font-bold uppercase rounded-xl text-slate-400 hover:text-white transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-wifi text-xs"></i> Wi-Fi
+                            </button>
+                            <button onclick="setPayloadMode('vcard')" id="type-btn-vcard" class="py-2 text-[10px] font-bold uppercase rounded-xl text-slate-400 hover:text-white transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-address-card text-xs"></i> vCard
+                            </button>
+                            <button onclick="setPayloadMode('geo')" id="type-btn-geo" class="py-2 text-[10px] font-bold uppercase rounded-xl text-slate-400 hover:text-white transition-all flex flex-col items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-location-dot text-xs"></i> Geo Pin
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Payload Inputs -->
+                    <div id="payload-input-container" class="bg-slate-900/30 p-3.5 rounded-2xl border border-slate-800/60 flex flex-col gap-3">
+                        
+                        <!-- URL Pane -->
+                        <div id="pane-url" class="flex flex-col gap-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-400 flex items-center justify-between">
+                                <span>Target Website / Endpoint URL:</span>
+                                <span class="text-teal-400 font-mono text-[9px]">https://</span>
+                            </label>
+                            <input type="url" id="inp-url" value="https://fusionmint.io" oninput="scheduleQrUpdate()" placeholder="https://example.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">
+                        </div>
+
+                        <!-- Plain Text Pane -->
+                        <div id="pane-text" class="hidden flex flex-col gap-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-400">Payload Message String / Plain Text:</label>
+                            <textarea id="inp-raw-text" rows="3" oninput="scheduleQrUpdate()" placeholder="Write raw string or message here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">Decentralized Neural Fabric Vector Staging Matrix</textarea>
+                        </div>
+
+                        <!-- Password / Credential Share Pane -->
+                        <div id="pane-password" class="hidden flex flex-col gap-2.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Secret Token / Passphrase:</label>
+                                <button type="button" onclick="generateRandomSecurePass()" class="text-[10px] font-mono text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1 cursor-pointer">
+                                    <i class="fa-solid fa-dice"></i> Generate Random
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="inp-secret-pass" value="Kx9#mP8$vQ2@zL5!" oninput="scheduleQrUpdate()" placeholder="Enter sensitive password or key" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-amber-300 focus:outline-none focus:border-teal-500/50 pr-10">
+                                <button type="button" onclick="copyPasswordToClipboard()" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-teal-400 text-xs transition-colors cursor-pointer" title="Copy to clipboard">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-0.5">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] uppercase font-bold text-slate-500">Label / Account ID (Optional):</label>
+                                    <input type="text" id="inp-secret-user" value="admin@fusionmint.io" oninput="scheduleQrUpdate()" placeholder="e.g. root / admin" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 font-mono text-xs text-teal-300 focus:outline-none">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] uppercase font-bold text-slate-500">Payload Encoding Schema:</label>
+                                    <select id="inp-secret-format" onchange="scheduleQrUpdate()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 font-mono text-xs text-teal-300 focus:outline-none">
+                                        <option value="raw">Raw Passphrase String</option>
+                                        <option value="formatted">Structured Credential Block</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UPI / Payment Pane -->
+                        <div id="pane-upi" class="hidden flex flex-col gap-2.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">UPI ID / VPA:</label>
+                                    <input type="text" id="inp-upi-vpa" value="merchant@okaxis" oninput="scheduleQrUpdate()" placeholder="name@upi / merchant@okaxis" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Payee / Store Name:</label>
+                                    <input type="text" id="inp-upi-name" value="FusionMint Store" oninput="scheduleQrUpdate()" placeholder="Fusion Store" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Fixed Amount (Optional ₹):</label>
+                                    <input type="number" id="inp-upi-amount" oninput="scheduleQrUpdate()" placeholder="e.g. 500" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Payment Note / Memo:</label>
+                                    <input type="text" id="inp-upi-note" value="Order #9921" oninput="scheduleQrUpdate()" placeholder="Invoice Ref" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-500/50">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wi-Fi Pane -->
+                        <div id="pane-wifi" class="hidden flex flex-col gap-2.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Network SSID:</label>
+                                    <input type="text" id="inp-wifi-ssid" value="FusionMint-WiFi" oninput="scheduleQrUpdate()" placeholder="SSID" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Security Encryption:</label>
+                                    <select id="inp-wifi-type" onchange="scheduleQrUpdate()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                                        <option value="WPA">WPA / WPA2 / WPA3</option>
+                                        <option value="WEP">WEP</option>
+                                        <option value="nopass">Open (No Password)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Password:</label>
+                                <input type="text" id="inp-wifi-pass" value="MatrixSecret2026" oninput="scheduleQrUpdate()" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- vCard Pane -->
+                        <div id="pane-vcard" class="hidden flex flex-col gap-2.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <input type="text" id="inp-vc-name" value="Alex Rivera" oninput="scheduleQrUpdate()" placeholder="Full Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                                <input type="text" id="inp-vc-org" value="FusionMint Labs" oninput="scheduleQrUpdate()" placeholder="Company / Role" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <input type="tel" id="inp-vc-phone" value="+1 (555) 234-5678" oninput="scheduleQrUpdate()" placeholder="Phone (+1...)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                                <input type="email" id="inp-vc-email" value="alex@fusionmint.io" oninput="scheduleQrUpdate()" placeholder="Email address" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Location / Geo Pin Pane -->
+                        <div id="pane-geo" class="hidden flex flex-col gap-2.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] uppercase font-bold text-slate-500">Latitude (e.g. 21.1702):</label>
+                                    <input type="text" id="inp-geo-lat" value="21.1702" oninput="scheduleQrUpdate()" placeholder="Latitude" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="text-[9px] uppercase font-bold text-slate-500">Longitude (e.g. 72.8311):</label>
+                                    <input type="text" id="inp-geo-lng" value="72.8311" oninput="scheduleQrUpdate()" placeholder="Longitude" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 2. Custom Center Image Uploader -->
+                    <div class="flex flex-col gap-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">2. Custom Center Image (Optional)</span>
+                            <button id="btn-remove-logo" onclick="clearCenterLogo()" class="hidden text-[10px] text-red-400 hover:text-red-300 font-mono transition-colors cursor-pointer flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can text-[9px]"></i> Remove Image
+                            </button>
+                        </div>
+
+                        <div class="relative w-full">
+                            <input type="file" id="inp-custom-logo" accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml" onchange="handleCustomLogoUpload(this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+                            
+                            <div id="logo-dropzone-view" class="w-full min-h-[90px] bg-slate-900/40 border-2 border-dashed border-slate-800 hover:border-teal-500/40 rounded-2xl p-3 flex items-center justify-center gap-3 transition-all group">
+                                <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-bold text-slate-200 group-hover:text-teal-400 transition-colors">Choose an image or drag & drop</span>
+                                    <span class="text-[10px] text-slate-500 font-mono">PNG, JPG, SVG, or WEBP formats</span>
+                                </div>
+                            </div>
+
+                            <div id="logo-uploaded-preview" class="hidden w-full bg-slate-900/60 border border-slate-800 rounded-2xl p-2.5 flex items-center justify-between">
+                                <div class="flex items-center gap-2.5 overflow-hidden">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                                        <img id="logo-thumb-img" src="" alt="Thumbnail" class="w-full h-full object-contain">
+                                    </div>
+                                    <div class="flex flex-col overflow-hidden">
+                                        <span id="logo-filename-lbl" class="text-xs font-mono font-bold text-teal-400 truncate max-w-[180px] sm:max-w-[240px]">image.png</span>
+                                        <span class="text-[9px] text-slate-500 font-mono">Mounted to matrix core</span>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="clearCenterLogo()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-red-950/50 border border-slate-700 hover:border-red-900/50 text-slate-400 hover:text-red-400 flex items-center justify-center text-xs transition-colors cursor-pointer shrink-0 z-30">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 bg-slate-900/20 p-2.5 rounded-xl border border-slate-800/40">
+                            <div class="flex flex-col gap-1">
+                                <div class="flex justify-between text-[10px] font-mono text-slate-400">
+                                    <span>Image Scale</span>
+                                    <span id="lbl-logo-size" class="text-teal-400">30%</span>
+                                </div>
+                                <input type="range" id="rng-logo-size" min="0.15" max="0.40" step="0.05" value="0.30" oninput="document.getElementById('lbl-logo-size').innerText=Math.round(this.value*100)+'%'; scheduleQrUpdate();" class="w-full h-1 bg-slate-950 rounded cursor-pointer accent-teal-500">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <div class="flex justify-between text-[10px] font-mono text-slate-400">
+                                    <span>Margin Halo</span>
+                                    <span id="lbl-logo-margin" class="text-teal-400">4px</span>
+                                </div>
+                                <input type="range" id="rng-logo-margin" min="0" max="12" step="1" value="4" oninput="document.getElementById('lbl-logo-margin').innerText=this.value+'px'; scheduleQrUpdate();" class="w-full h-1 bg-slate-950 rounded cursor-pointer accent-teal-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Chromatic Palette & Background -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">3. Chromatic Palette & Background Options</span>
+                        
+                        <div class="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
+                            <button title="Classic Black/White" onclick="applyColorTheme('#ffffff', '#000000')" class="h-8 rounded-lg bg-white border border-slate-300 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-black rounded-full"></div></button>
+                            <button title="Pure Dark" onclick="applyColorTheme('#000000', '#ffffff')" class="h-8 rounded-lg bg-black border border-slate-700 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-white rounded-full"></div></button>
+                            <button title="Cyber Emerald" onclick="applyColorTheme('#060913', '#10b981')" class="h-8 rounded-lg bg-[#060913] border border-teal-500/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-emerald-400 rounded-full"></div></button>
+                            <button title="Neon Cyan" onclick="applyColorTheme('#03131a', '#06b6d4')" class="h-8 rounded-lg bg-[#03131a] border border-cyan-500/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-cyan-400 rounded-full"></div></button>
+                            <button title="Ultraviolet" onclick="applyColorTheme('#0e0720', '#a855f7')" class="h-8 rounded-lg bg-[#0e0720] border border-purple-500/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-purple-400 rounded-full"></div></button>
+                            <button title="Amber Gold" onclick="applyColorTheme('#140b02', '#f59e0b')" class="h-8 rounded-lg bg-[#140b02] border border-amber-500/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-amber-400 rounded-full"></div></button>
+                            <button title="Crimson Ruby" onclick="applyColorTheme('#1c0407', '#f43f5e')" class="h-8 rounded-lg bg-[#1c0407] border border-rose-500/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"><div class="w-2.5 h-2.5 bg-rose-400 rounded-full"></div></button>
+                            <button title="Transparent" onclick="enableTransparentBg()" class="h-8 rounded-lg bg-slate-900/60 border border-dashed border-teal-500/40 flex items-center justify-center text-[10px] text-teal-400 font-mono cursor-pointer hover:scale-105 transition-transform">Alpha</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1">
+                            <div class="bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60 flex items-center justify-between">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] uppercase font-bold text-slate-400">Background Canvas:</span>
+                                    <span id="lbl-bg-hex" class="text-[10px] font-mono text-teal-400">#060913</span>
+                                </div>
+                                <input type="color" id="picker-bg-color" value="#060913" oninput="handleBgColorChange(this.value)" class="w-8 h-8 rounded-lg bg-transparent border-0 cursor-pointer">
+                            </div>
+
+                            <div class="bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60 flex items-center justify-between">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] uppercase font-bold text-slate-400">QR Matrix Dots:</span>
+                                    <span id="lbl-fg-hex" class="text-[10px] font-mono text-emerald-400">#10b981</span>
+                                </div>
+                                <input type="color" id="picker-fg-color" value="#10b981" oninput="handleFgColorChange(this.value)" class="w-8 h-8 rounded-lg bg-transparent border-0 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between bg-slate-900/30 px-3 py-2 rounded-xl border border-slate-800/40">
+                            <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
+                                <input type="checkbox" id="chk-gradient" onchange="toggleGradientMode(this.checked)" class="w-4 h-4 rounded border-slate-800 bg-slate-950 text-teal-500 accent-teal-500">
+                                <span>Enable Linear Gradient Blend</span>
+                            </label>
+                            <div id="grad-end-picker-box" class="hidden items-center gap-2">
+                                <span class="text-[10px] font-mono text-slate-400">End Color:</span>
+                                <input type="color" id="picker-fg-grad" value="#06b6d4" oninput="scheduleQrUpdate()" class="w-6 h-6 rounded bg-transparent border-0 cursor-pointer">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 4. Geometry Styles -->
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">4. Geometric Patterns & Corners</span>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1.5 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Dot Matrix Style:</label>
+                                <select id="sel-dot-type" onchange="scheduleQrUpdate()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 font-mono text-xs text-teal-400 focus:outline-none">
+                                    <option value="square">Square (Classic Standard)</option>
+                                    <option value="rounded" selected>Rounded Smooth</option>
+                                    <option value="dots">Circular Dots</option>
+                                    <option value="classy">Classy</option>
+                                    <option value="classy-rounded">Classy Rounded</option>
+                                    <option value="extra-rounded">Extra Rounded</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-1.5 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Corner Framing:</label>
+                                <select id="sel-corner-type" onchange="scheduleQrUpdate()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 font-mono text-xs text-teal-400 focus:outline-none">
+                                    <option value="square">Sharp Square (Standard)</option>
+                                    <option value="extra-rounded" selected>Squircle Soft</option>
+                                    <option value="dot">Circular Dot</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>ECC Mode: High (30% Data Recovery)</span>
+                    <span class="text-teal-400">Live Active Stream</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Viewport & Download -->
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-6 xl:col-span-6 flex flex-col gap-4 h-full relative pb-6 lg:pb-0 order-1 lg:order-2">
+            
+            <div class="bg-slate-950/40 border border-slate-800/70 rounded-3xl p-4 sm:p-6 flex flex-col gap-4 flex-1 justify-between relative shadow-2xl backdrop-blur-md">
+                
+                <div class="flex items-center justify-between border-b border-slate-900/90 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-slate-300">Live Synthesis Viewport</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="canvas-resolution-badge" class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-lg border border-teal-500/20">1024 × 1024 PX</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col items-center justify-center p-4 min-h-[340px] relative">
+                    <div id="qr-presentation-frame" class="relative p-6 sm:p-8 rounded-3xl border border-slate-800/80 bg-slate-950/80 qr-card-glow flex items-center justify-center transition-all duration-300">
+                        <div id="qr-target-node" class="flex items-center justify-center max-w-[280px] sm:max-w-[320px] max-h-[320px]"></div>
+                    </div>
+
+                    <div id="live-payload-summary" class="mt-4 text-center max-w-md w-full px-2">
+                        <p class="text-[11px] font-mono text-slate-400 truncate px-4 py-1.5 rounded-full bg-slate-900/60 border border-slate-800/80 shadow-inner">
+                            <span class="text-teal-400">Payload:</span> <span id="summary-text-str">https://fusionmint.io</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Export Controls -->
+                <div class="flex flex-col gap-2.5 pt-3 border-t border-slate-900">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        
+                        <button onclick="downloadMatrixQRCode('png')" class="min-h-[46px] bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-file-image text-xs"></i> Download PNG
+                        </button>
+
+                        <button onclick="downloadMatrixQRCode('svg')" class="min-h-[46px] bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-teal-500/40 text-teal-400 font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bezier-curve text-xs"></i> Vector (SVG)
+                        </button>
+
+                        <button onclick="printFormattedQRCard()" class="col-span-2 sm:col-span-1 min-h-[46px] bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-slate-300 font-extrabold text-xs uppercase tracking-widest rounded-xl transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print text-xs"></i> Print Matrix
+                        </button>
+
+                    </div>
+
+                    <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 px-1">
+                        <span>Zero server latency. 100% Client-Side.</span>
+                        <button onclick="copyRawPayloadString()" class="hover:text-teal-400 underline decoration-slate-700 cursor-pointer">Copy Payload</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Processing Overlay Modal -->
+    <div id="matrix-processing-overlay" class="invisible opacity-0 fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[999] flex flex-col items-center justify-center gap-4 select-none pointer-events-none transition-all duration-300 [&.active]:opacity-100 [&.active]:visible [&.active]:pointer-events-auto">
+        <div class="anim-target scale-90 flex flex-col items-center justify-center gap-4 transition-transform duration-300">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-t-teal-400 border-r-teal-500/10 border-b-teal-500/10 border-l-teal-500/10 animate-spin [animation-duration:1s]"></div>
+                <div class="absolute w-10 h-10 rounded-full border-4 border-b-emerald-400 border-t-emerald-500/10 border-r-emerald-500/10 border-l-emerald-500/10 animate-spin [animation-direction:reverse] [animation-duration:1.5s]"></div>
+                <i class="fa-solid fa-qrcode text-teal-400 text-lg animate-pulse"></i>
+            </div>
+            <div class="flex flex-col items-center gap-1 text-center">
+                <h4 id="overlay-main-title" class="text-sm font-extrabold uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-400 font-mono">Synthesizing Vector Frame</h4>
+                <p id="overlay-status-label" class="text-[11px] text-slate-500 font-mono">Writing algebraic Reed-Solomon polynomial buffers...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side High-Resiliency QR Matrix Computation Node.
+    </footer>
+
+    <script src="../../assets/js/imageProcessCore/qr-code-generator.js"></script>
+</body>
+</html>
