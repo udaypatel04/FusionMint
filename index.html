@@ -715,7 +715,72 @@
                     </article>
 
                 </div>
-            </section>
+        </section>
+
+
+
+
+       <!-- ================= FILE TRANSFER & P2P PROTOCOLS CATEGORY ================= -->
+       <!-- ================= FILE TRANSFER & MESH PROTOCOLS CATEGORY ================= -->
+        <section class="category-block-node" id="category-section-fileshare" aria-labelledby="heading-fileshare">
+            <div class="mb-6 flex items-center justify-between border-b border-slate-900/80 pb-3">
+                <h3 id="heading-fileshare" class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-teal-500"></i> File Transfer &amp; Mesh Teleport
+                </h3>
+                <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">
+                    <i class="fa-solid fa-bolt text-[9px]"></i> GT &amp; LT Channels
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- 1. Global Transfer: GT Cloud Share (Live Active) -->
+                <article class="feature-card bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/40 hover:bg-slate-900/60 metrics-card-glow group">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg border border-teal-500/20 group-hover:bg-teal-400 group-hover:text-slate-950 transition-all duration-300">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span> GT Active
+                            </span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">GT Cloud Share</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed"><strong class="text-slate-300">Global Transfer:</strong> High-speed internet file relay mediated by PHP backend API. Transfer payloads worldwide using 6-digit room codes, instant QR connect, and auto-purging vaults.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 font-mono">Global Transfer</span>
+                        <a href="pages/fileShare/gt-cloud-share.html" class="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 group/btn">
+                            Launch Engine <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5 group-hover/btn:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- 2. Local Transfer: LT Local Share (Coming Soon) -->
+                <article class="feature-card bg-slate-900/30 border border-slate-800/60 rounded-2xl p-6 flex flex-col justify-between hover:border-slate-700/60 opacity-85 hover:opacity-100 transition-all group">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg border border-amber-500/20 group-hover:bg-amber-400 group-hover:text-slate-950 transition-all duration-300">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <i class="fa-solid fa-lock text-[8px]"></i> Coming Soon
+                            </span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">LT Local Share</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed"><strong class="text-slate-300">LAN Transfer:</strong> Zero-cloud local subnet discovery engine. Beam multi-gigabyte payloads across local Wi-Fi &amp; LAN networks at line-rate hardware speeds without internet bandwidth.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/40">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 font-mono">LAN Transfer</span>
+                        <span class="text-xs font-mono font-semibold text-slate-500 flex items-center gap-1">
+                            <i class="fa-solid fa-clock-rotate-left text-[10px]"></i> In Development
+                        </span>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
     </main>
 
     <footer class="mt-auto border-t border-slate-900 bg-slate-950/40 py-5 px-6 text-center text-xs text-slate-600 shrink-0">
