@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Calendar Matrix & Almanac // FusionMint Laboratory</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/dateTimeCore/calendar-matrix.css">
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col pt-20 lg:pt-24 overflow-y-auto select-none bg-[#020807]">
+
+    <!-- Atmospheric Background Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-64 bg-gradient-to-b from-teal-500/10 via-emerald-500/5 to-transparent blur-3xl pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <div class="fixed top-4 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 flex justify-center">
+        <nav class="w-full max-w-7xl bg-slate-950/70 backdrop-blur-xl border border-slate-800/80 rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-950/60">
+            
+            <div class="flex items-center gap-2.5 group cursor-pointer w-1/3 justify-start shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:rotate-180 transition-transform duration-700">
+                    <i class="fa-solid fa-calendar-days text-slate-950 text-xs animate-pulse"></i>
+                </div>
+                <span class="text-sm font-bold text-white tracking-tight hidden lg:inline">Fusion<span class="text-teal-400">Mint</span> <span class="text-[11px] text-slate-500 font-mono font-normal">// Calendar Matrix</span></span>
+            </div>
+            
+            <!-- Main Site Nav Links in Navbar -->
+            <div class="flex items-center justify-center w-1/3 shrink-0">
+                <div class="flex items-center gap-1 bg-slate-900/40 p-1 rounded-xl border border-slate-800/40 shadow-inner">
+                    <a href="../../index.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors flex items-center gap-1.5">
+                        <span>Home</span>
+                    </a>
+                    <a href="../../index.html#library" class="px-3.5 py-1.5 text-xs font-semibold text-teal-400 bg-teal-500/10 rounded-lg border border-teal-500/10 transition-all flex items-center gap-1.5">
+                        <span>Tools</span>
+                    </a>
+                    <a href="../navBar/about.html" class="hidden sm:inline px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-white rounded-lg transition-colors flex items-center gap-1.5">
+                        <span>About</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sync Pill Badge -->
+            <div class="flex items-center justify-end w-1/3 shrink-0 gap-2">
+                <div id="badge-workspace" class="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-900/80 px-2.5 py-1.5 rounded-xl border border-slate-800/60 shadow-md">
+                    <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                    <span id="badge-cal-display" class="font-mono text-teal-300">Syncing...</span>
+                </div>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="w-full max-w-[98%] mx-auto px-2 sm:px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 relative z-10 items-stretch h-auto lg:h-[calc(100vh-5.5rem)]">
+        
+        <!-- Left Sidebar: Configuration & Almanac Parameters -->
+        <div id="sidebar-configuration-area" class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col gap-4 h-auto lg:h-full order-2 lg:order-1">
+            <div class="bg-slate-950/50 border border-slate-800/70 rounded-3xl p-4 sm:p-5 flex flex-col gap-4 flex-1 justify-between overflow-y-auto shadow-xl backdrop-blur-md">
+                
+                <div class="flex flex-col gap-4 pr-1">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-900 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-6 h-6 rounded bg-teal-500 flex items-center justify-center">
+                                <i class="fa-solid fa-compass text-slate-950 text-xs"></i>
+                            </div>
+                            <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-200">Interactive Controls</h3>
+                        </div>
+                        <span class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-md border border-teal-500/20">Memory Synced</span>
+                    </div>
+
+                    <!-- 1. Matrix View Switcher -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">
+                                <span>1. Matrix View Mode</span>
+                                <i class="fa-solid fa-sparkles text-[9px] text-teal-400 animate-pulse"></i>
+                            </span>
+                            <span class="text-teal-400 font-mono text-[9px] bg-teal-500/10 border border-teal-500/20 px-1.5 py-0.5 rounded">VIEWS</span>
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-slate-900/40 p-1.5 rounded-2xl border border-slate-800/60 shadow-inner">
+                            <button type="button" onclick="setMatrixView('month')" id="btn-view-month" class="py-2 px-1 text-[10px] font-mono font-bold uppercase rounded-xl bg-teal-500 text-slate-950 shadow-md transition-all cursor-pointer flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-calendar-days text-[10px]"></i>
+                                <span>Month</span>
+                            </button>
+                            <button type="button" onclick="setMatrixView('week')" id="btn-view-week" class="py-2 px-1 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-table-columns text-[10px]"></i>
+                                <span>Week</span>
+                            </button>
+                            <button type="button" onclick="setMatrixView('year')" id="btn-view-year" class="py-2 px-1 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-calendar text-[10px]"></i>
+                                <span>Year</span>
+                            </button>
+                            <button type="button" onclick="setMatrixView('calculator')" id="btn-view-calculator" class="py-2 px-1 text-[10px] font-mono font-bold uppercase rounded-xl bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-calculator text-[10px]"></i>
+                                <span>Delta</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Date Navigation & Jump -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+                            <span>2. Temporal Jump & Date Navigator</span>
+                            <button type="button" onclick="jumpToToday()" class="text-teal-400 hover:text-teal-300 text-[10px] font-mono flex items-center gap-1 cursor-pointer bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 rounded">
+                                <i class="fa-solid fa-rotate-left text-[9px]"></i> Today
+                            </button>
+                        </label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <select id="sel-cal-month" onchange="onMonthYearSelectChange()" class="col-span-2 bg-slate-950 border border-slate-800 hover:border-teal-500/50 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-400 transition-all cursor-pointer">
+                                <option value="0">January</option>
+                                <option value="1">February</option>
+                                <option value="2">March</option>
+                                <option value="3">April</option>
+                                <option value="4">May</option>
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8" selected>September</option>
+                                <option value="9">October</option>
+                                <option value="10">November</option>
+                                <option value="11">December</option>
+                            </select>
+                            <input type="number" id="inp-cal-year" value="2026" min="1900" max="2100" onchange="onMonthYearSelectChange()" class="col-span-1 bg-slate-950 border border-slate-800 hover:border-teal-500/50 rounded-xl px-2 py-2 font-mono text-xs text-teal-300 text-center focus:outline-none focus:border-teal-400">
+                        </div>
+                    </div>
+
+                    <!-- 3. Lunar & Astronomical Telemetry Mini-Card -->
+                    <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col gap-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-moon text-amber-300 text-[11px]"></i> Lunar Phase &amp; Astronomy
+                            </span>
+                            <span id="astronomy-zodiac-sign" class="text-[10px] font-mono text-teal-300 bg-teal-500/10 px-2 py-0.5 rounded border border-teal-500/20">Virgo (કન્યા)</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 flex flex-col">
+                                <span class="text-[9px] uppercase font-bold text-slate-500">Moon Phase</span>
+                                <span id="astronomy-moon-phase" class="text-xs font-mono font-bold text-slate-200 mt-0.5">Waxing Crescent</span>
+                            </div>
+                            <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 flex flex-col">
+                                <span class="text-[9px] uppercase font-bold text-slate-500">Lunar Illumination</span>
+                                <span id="astronomy-moon-illum" class="text-xs font-mono font-bold text-teal-300 mt-0.5">34.5% Lit</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Fast Event Protocol Dispatcher with Browser Memory -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+                            <span>4. Add Custom Event (Deletable)</span>
+                            <span class="text-emerald-400 font-mono text-[9px]">localStorage</span>
+                        </label>
+                        <form onsubmit="handleNewEventSubmit(event)" class="space-y-2">
+                            <input type="text" id="inp-event-title" required placeholder="Event / meeting / deadline name..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-teal-400">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="date" id="inp-event-date" required class="bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-400 [color-scheme:dark]">
+                                <select id="sel-event-category" class="bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-400">
+                                    <option value="custom">Personal / Work</option>
+                                    <option value="focus">Focus Block</option>
+                                    <option value="milestone">Milestone</option>
+                                    <option value="academic">Academic / Review</option>
+                                    <option value="celebration">Celebration</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full py-2 bg-teal-500 text-slate-950 font-bold font-mono text-xs rounded-xl shadow-md hover:bg-teal-400 transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-calendar-plus text-[10px]"></i> Save Custom Event
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    <span>Astronomical Almanac &amp; VS Matrix</span>
+                    <button type="button" onclick="clearAllCustomEvents()" class="text-rose-400/80 hover:text-rose-300 underline cursor-pointer" title="Delete all custom added events">Clear My Events</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Output Viewport Dashboard Area -->
+        <div id="presentation-viewport-container" class="col-span-12 lg:col-span-7 xl:col-span-8 flex flex-col gap-4 h-full relative pb-6 lg:pb-0 order-1 lg:order-2">
+            
+            <div class="bg-slate-950/40 border border-slate-800/70 rounded-3xl p-4 sm:p-6 flex flex-col gap-5 flex-1 justify-between relative shadow-2xl backdrop-blur-md overflow-y-auto">
+                
+                <!-- Dashboard Header Telemetry Strip -->
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-900/90 pb-3 gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span id="cal-telemetry-header-title" class="text-xs uppercase font-extrabold tracking-wider text-slate-300">September 2026 Matrix</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <span id="vikram-samvat-badge" class="text-[10px] font-mono font-bold text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-500/20 flex items-center gap-1">
+                            <i class="fa-solid fa-om text-[9px]"></i> <span id="lbl-vs-year">VS 2083 Bhadrapada</span>
+                        </span>
+                        <span id="iso-week-badge" class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-lg border border-teal-500/20">Week 37 / Day 255</span>
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 1: INTERACTIVE MONTH GRID ================= -->
+                <div id="viewport-month" class="cal-viewport flex flex-col gap-4">
+                    
+                    <!-- Month Matrix Controls Toolbar -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60">
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="navigateMonth(-1)" class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-teal-300 hover:border-teal-500/40 flex items-center justify-center transition-colors cursor-pointer" title="Previous Month">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            <h2 id="month-grid-title" class="text-base sm:text-lg font-bold font-mono text-white px-2 cursor-pointer hover:text-teal-400 transition-colors" onclick="setMatrixView('year')" title="Click to view full year">September 2026</h2>
+                            <button type="button" onclick="navigateMonth(1)" class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-teal-300 hover:border-teal-500/40 flex items-center justify-center transition-colors cursor-pointer" title="Next Month">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="setMatrixView('year')" class="px-2.5 py-1.5 bg-slate-950 border border-slate-800 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 rounded-xl text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-calendar text-[10px]"></i> View Year
+                            </button>
+                            <button type="button" onclick="exportCalendarEventsICS()" class="px-2.5 py-1.5 bg-slate-950 border border-slate-800 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 rounded-xl text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-file-export text-[10px]"></i> .ICS
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 7-Column Day Names Header -->
+                    <div class="grid grid-cols-7 gap-1 sm:gap-2 text-center text-[10px] font-mono font-bold uppercase text-slate-400">
+                        <div class="py-1 text-rose-400/80">Sun</div>
+                        <div class="py-1">Mon</div>
+                        <div class="py-1">Tue</div>
+                        <div class="py-1">Wed</div>
+                        <div class="py-1">Thu</div>
+                        <div class="py-1">Fri</div>
+                        <div class="py-1 text-teal-400/80">Sat</div>
+                    </div>
+
+                    <!-- Month Days Dynamic Matrix Grid -->
+                    <div id="month-days-container" class="grid grid-cols-7 gap-1 sm:gap-2 min-h-[280px]">
+                        <!-- Dynamic Month Day Tiles Inserted Here -->
+                    </div>
+
+                </div>
+
+                <!-- ================= VIEW 2: WEEKLY HORIZON ================= -->
+                <div id="viewport-week" class="cal-viewport hidden flex-col gap-4">
+                    <div class="flex items-center justify-between bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60">
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="navigateWeek(-1)" class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-teal-300 flex items-center justify-center cursor-pointer">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            <h2 id="week-horizon-title" class="text-sm sm:text-base font-bold font-mono text-white">Week Horizon</h2>
+                            <button type="button" onclick="navigateWeek(1)" class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-teal-300 flex items-center justify-center cursor-pointer">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                        <button type="button" onclick="setMatrixView('month')" class="px-2.5 py-1.5 bg-slate-950 border border-slate-800 hover:border-teal-500/40 text-slate-300 hover:text-teal-300 rounded-xl text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-arrow-left text-[10px]"></i> Back to Month
+                        </button>
+                    </div>
+                    <div id="week-agenda-grid" class="grid grid-cols-1 sm:grid-cols-7 gap-2">
+                        <!-- Dynamic 7 Day Agenda Blocks -->
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 3: YEAR-AT-A-GLANCE MATRIX (WITH INTERACTIVE DRILLDOWN) ================= -->
+                <div id="viewport-year" class="cal-viewport hidden flex-col gap-4">
+                    <div class="flex items-center justify-between bg-slate-900/40 p-3 rounded-2xl border border-slate-800/60">
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="navigateYear(-1)" class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-teal-300 flex items-center justify-center cursor-pointer">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            <h2 id="year-matrix-title" class="text-base font-bold font-mono text-white">Year 2026 Annual Overview</h2>
+                            <button type="button" onclick="navigateYear(1)" class="w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 hover:text-teal-300 flex items-center justify-center cursor-pointer">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                        <span class="text-[10px] font-mono text-teal-400 bg-teal-500/10 px-2 py-1 rounded-lg border border-teal-500/20">Click any month or day to drill down</span>
+                    </div>
+                    <div id="annual-12-months-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 max-h-[390px] overflow-y-auto pr-1">
+                        <!-- Dynamic 12 interactive mini month matrices -->
+                    </div>
+                </div>
+
+                <!-- ================= VIEW 4: DATE DELTA & BUSINESS DAY CALCULATOR ================= -->
+                <div id="viewport-calculator" class="cal-viewport hidden flex-col gap-4">
+                    <div class="bg-slate-950/80 border border-slate-800/80 rounded-3xl p-5 matrix-card-glow flex flex-col gap-4">
+                        <h3 class="text-xs uppercase font-extrabold tracking-wider text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-teal-400"></i> Date Duration &amp; Business Days Delta
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">Start Date</label>
+                                <input type="date" id="calc-start-date" value="2026-09-01" onchange="computeDateDelta()" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-400 [color-scheme:dark]">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[10px] uppercase font-bold text-slate-400">End Date</label>
+                                <input type="date" id="calc-end-date" value="2026-12-31" onchange="computeDateDelta()" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 font-mono text-xs text-teal-300 focus:outline-none focus:border-teal-400 [color-scheme:dark]">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+                            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800 flex flex-col">
+                                <span class="text-[9px] uppercase font-bold text-slate-500">Total Days</span>
+                                <span id="delta-total-days" class="text-base font-bold font-mono text-teal-300 mt-0.5">0 Days</span>
+                            </div>
+                            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800 flex flex-col">
+                                <span class="text-[9px] uppercase font-bold text-slate-500">Business Workdays</span>
+                                <span id="delta-workdays" class="text-base font-bold font-mono text-emerald-400 mt-0.5">0 Days</span>
+                            </div>
+                            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800 flex flex-col">
+                                <span class="text-[9px] uppercase font-bold text-slate-500">Weekends</span>
+                                <span id="delta-weekends" class="text-base font-bold font-mono text-amber-300 mt-0.5">0 Days</span>
+                            </div>
+                            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800 flex flex-col">
+                                <span class="text-[9px] uppercase font-bold text-slate-500">Full Weeks</span>
+                                <span id="delta-weeks" class="text-base font-bold font-mono text-teal-300 mt-0.5">0 Wks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vikram Samvat Hindu Calendar Almanac Matrix Strip -->
+                <div class="bg-slate-900/40 border border-orange-500/20 rounded-2xl p-4 flex flex-col gap-2 relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xs">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-orange-300">Vikram Samvat (વિક્રમ સંવત) Lunisolar Telemetry</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-orange-400/80 bg-orange-500/5 px-2 py-0.5 rounded border border-orange-500/10">Vedic Almanac</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-1">
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Samvat Year (સંવત)</span>
+                            <span id="vs-matrix-year" class="text-xs font-mono font-bold text-orange-400 mt-0.5">VS 2083</span>
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Masa / Month (માસ)</span>
+                            <span id="vs-matrix-masa" class="text-xs font-mono font-bold text-amber-300 mt-0.5">Bhadrapada (ભાદરવો)</span>
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Paksha / Phase (પક્ષ)</span>
+                            <span id="vs-matrix-paksha" class="text-xs font-mono font-bold text-amber-300 mt-0.5">Shukla Paksha (સુદ)</span>
+                        </div>
+                        <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-500">Vedic Season (ઋતુ)</span>
+                            <span id="vs-matrix-ritu" class="text-xs font-mono font-bold text-amber-300 mt-0.5">Sharad (શરદ ઋતુ)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Summary Strip -->
+                <div class="pt-3 border-t border-slate-900 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                    <span>100% Client-Side Temporal Computation Engine</span>
+                    <button type="button" onclick="copyCalendarSummaryReport()" class="hover:text-teal-400 underline decoration-slate-700 cursor-pointer">Copy Almanac Snapshot</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Selected Date Details & Interactive Event Management Modal -->
+    <div id="cal-date-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-950 border border-teal-500/50 p-6 sm:p-7 rounded-3xl max-w-md w-full shadow-2xl flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center border border-teal-500/20">
+                        <i class="fa-solid fa-calendar-day text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 id="modal-date-full" class="text-sm font-bold text-white font-mono">Date Details</h4>
+                        <span id="modal-date-vs" class="text-[10px] font-mono text-orange-400">VS 2083 Bhadrapada</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeDateDetailsModal()" class="text-slate-500 hover:text-white p-1 cursor-pointer">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Quick Action Links -->
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" id="modal-btn-view-week" class="py-1.5 px-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-teal-500/40 text-[11px] font-mono text-teal-300 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-table-columns text-[10px]"></i> View in Week
+                </button>
+                <button type="button" id="modal-btn-view-month" class="py-1.5 px-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-teal-500/40 text-[11px] font-mono text-teal-300 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-calendar-days text-[10px]"></i> View in Month
+                </button>
+            </div>
+
+            <!-- Events & Festivals on this date with Protected Official Items -->
+            <div class="flex flex-col gap-2">
+                <span class="text-[10px] font-bold uppercase text-slate-400 font-mono flex items-center justify-between">
+                    <span>Events &amp; Observances</span>
+                    <span id="modal-event-count" class="text-teal-400">0 Events</span>
+                </span>
+                <div id="modal-events-list" class="space-y-1.5 max-h-48 overflow-y-auto">
+                    <!-- Events list rendered dynamically -->
+                </div>
+            </div>
+
+            <button type="button" onclick="closeDateDetailsModal()" class="w-full py-2.5 bg-teal-500 text-slate-950 font-bold font-mono text-xs rounded-xl shadow-md hover:bg-teal-400 transition-all cursor-pointer">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-900/60 bg-slate-950/40 py-2 px-6 text-center text-xs text-slate-600 shrink-0">
+        &copy; 2026 FusionMint Workspace. Client-Side Temporal Computation Architecture.
+    </footer>
+
+    <!-- Integrated Calendar Matrix Engine Logic with LocalStorage Persistence -->
+    <script src="../../assets/js/dateTimeCore/calendar-matrix.js"></script>
+</body>
+</html>

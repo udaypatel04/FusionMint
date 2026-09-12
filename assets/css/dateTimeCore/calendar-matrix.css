@@ -1,0 +1,38 @@
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #020807;
+}
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+.matrix-card-glow {
+    box-shadow: 0 0 35px -5px rgba(20, 184, 166, 0.12), inset 0 0 20px 0 rgba(20, 184, 166, 0.03);
+}
+.stat-glow {
+    box-shadow: 0 0 20px -3px rgba(45, 212, 191, 0.15);
+}
+.year-month-card {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.year-month-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(45, 212, 191, 0.5);
+    background-color: rgba(15, 23, 42, 0.85);
+    box-shadow: 0 10px 25px -5px rgba(20, 184, 166, 0.15);
+}
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track {
+    background: #020807;
+}
+::-webkit-scrollbar-thumb {
+    background: #134e4a;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #2dd4bf;
+}
